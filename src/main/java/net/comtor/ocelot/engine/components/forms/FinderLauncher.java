@@ -10,50 +10,48 @@ import net.comtor.ocelot.bootstrap.forms.BShowField;
  */
 public class FinderLauncher extends BShowField {
 
-    private String myEndpoint;
+    private static final String CONTROL_CLASS = "form-control-ocelot";
+
+    private String endpoint;
     private BModalLauncherButton modalLauncherButton;
 
-    public FinderLauncher(String name, String label, String endpoint) {
-        super(name, label, "", "");
-        this.myEndpoint = endpoint + "/" + name;
-        modalLauncherButton = getModalLauncher(myEndpoint);
-        getFormElementContainer().setStyle("height: 36px");
-        getFormElement().setClass(getControlClass());
+    public FinderLauncher(String label, String showValue, String name, String hiddenValue, String endpoint) {
+        super(label, showValue, name, hiddenValue);
+
+        this.endpoint = endpoint + "/" + name;
+        modalLauncherButton = getModalLauncher(endpoint);
+//TODO:
+//        getFormElementContainer().setStyle("height: 36px");
+        getInput().setClass(CONTROL_CLASS);
     }
 
-    public FinderLauncher(String name, String label, String hidden, String visible, String endpoint) {
-        super(name, label, hidden, visible);
-        this.myEndpoint = endpoint + "/" + name;
-        modalLauncherButton = getModalLauncher(myEndpoint);
-        getFormElementContainer().setStyle("height: 36px");
-        getFormElement().setClass(getControlClass());
-
+    public FinderLauncher(String label, String name, String endpoint) {
+        this(label, "", name, null, endpoint);
     }
 
     public FinderLauncher addParamsToEndpoint(String urlParams) {
-        modalLauncherButton.addAttribute("endpoint", myEndpoint + "?" + urlParams);
+        modalLauncherButton.addAttribute("endpoint", endpoint + "?" + urlParams);
+
         return this;
     }
 
     protected BModalLauncherButton getModalLauncher(String urlEndpoint) {
-        BModalLauncherButton modalLauncherButton = new BModalLauncherButton("ocelotModal", "fas fa-search");
-        modalLauncherButton = new BModalLauncherButton("ocelotModal", "fas fa-search");
-        modalLauncherButton.addClass("btn").addClass("btn-primary").addClass("ml-3");
-        modalLauncherButton.setBColor(BColor.PRIMARY);
-        modalLauncherButton.setStyle("float:right");
-        modalLauncherButton.addClass("finderLauncher");
-        modalLauncherButton.addAttribute("endpoint", urlEndpoint);
-        return modalLauncherButton;
+        BModalLauncherButton button = new BModalLauncherButton("ocelotModal", "fas fa-search");
+        button.addClass("btn")
+                .addClass("btn-primary")
+                .addClass("ml-3");
+        button.setBColor(BColor.PRIMARY);
+        button.setStyle("float: right");
+        button.addClass("finderLauncher");
+        button.addAttribute("endpoint", urlEndpoint);
+
+        return button;
     }
 
     @Override
     protected void preHtmlRender() {
-        getFormElementContainer().addFirst(modalLauncherButton);
-        super.preHtmlRender(); //To change body of generated methods, choose Tools | Templates.
-    }
+        add(modalLauncherButton);
 
-    protected String getControlClass() {
-        return "form-control-ocelot";
+        super.preHtmlRender();
     }
-
 }

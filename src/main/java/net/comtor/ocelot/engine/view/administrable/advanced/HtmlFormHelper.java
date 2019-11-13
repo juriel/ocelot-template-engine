@@ -27,39 +27,39 @@ public final class HtmlFormHelper {
     }
 
     public static void fillForm(HtmlForm form, Object object) {
-        addId(form, object);
-
-        Class<? extends Object> clazz = object.getClass();
-        Method[] methods = clazz.getMethods();
-
-        for (Method method : methods) {
-            if (method.getName().contains("get")) {
-                String fieldName = method.getName().substring(3);
-                fieldName = Character.toLowerCase(fieldName.charAt(0)) + fieldName.substring(1);
-
-                LinkedHashMap<String, HtmlFormElement> formElements = form.getFormElements();
-
-                if (formElements.containsKey(fieldName)) {
-                    HtmlFormElement formElement = formElements.get(fieldName);
-                    String defaultValue = formElement.getDefaultValue();
-
-                    if (defaultValue == null) {
-                        try {
-                            formElement.setValue((method.invoke(object) == null) ? "" : method.invoke(object) + "");
-
-                            if (formElement.isIsId()) {
-                                formElement.getBoostrapFormElement().readOnly();
-                            }
-
-                        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-                        }
-                    } else {
-                        formElement.getBoostrapFormElement().setValue(defaultValue);
-                    }
-                }
-            }
-        }
+//        addId(form, object);
+//
+//        Class<? extends Object> clazz = object.getClass();
+//        Method[] methods = clazz.getMethods();
+//
+//        for (Method method : methods) {
+//            if (method.getName().contains("get")) {
+//                String fieldName = method.getName().substring(3);
+//                fieldName = Character.toLowerCase(fieldName.charAt(0)) + fieldName.substring(1);
+//
+//                LinkedHashMap<String, HtmlFormElement> formElements = form.getFormElements();
+//
+//                if (formElements.containsKey(fieldName)) {
+//                    HtmlFormElement formElement = formElements.get(fieldName);
+//                    String defaultValue = formElement.getDefaultValue();
+//
+//                    if (defaultValue == null) {
+//                        try {
+//                            formElement.setValue((method.invoke(object) == null) ? "" : method.invoke(object) + "");
+//
+//                            if (formElement.isIsId()) {
+//                                formElement.getBoostrapFormElement().readOnly();
+//                            }
+//
+//                        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+//                            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+//                        }
+//                    } else {
+//                        formElement.getBoostrapFormElement().setValue(defaultValue);
+//                    }
+//                }
+//            }
+//        }
 
     }
 

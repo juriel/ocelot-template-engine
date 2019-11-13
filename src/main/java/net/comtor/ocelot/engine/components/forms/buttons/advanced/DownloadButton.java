@@ -20,7 +20,7 @@ public class DownloadButton extends HtmlA {
         setStyle("margin-right: 5px");
 
         if (StringUtils.isNotEmpty(value)) {
-            addData(value);
+            addEscapedText(value);
         }
     }
 

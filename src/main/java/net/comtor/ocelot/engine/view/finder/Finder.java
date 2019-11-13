@@ -106,11 +106,9 @@ public abstract class Finder<E> {
     }
 
     protected void getFilters(LinkedList<HtmlObject> filters) {
-        BInputText defaultFilter = new BInputText("filter", "Filtro");
+        BInputText defaultFilter = new BInputText("Filtro", "filter", getDefaultFilterMessage());
         defaultFilter.onKeyPress("return pulsar(event)");
-        if (getDefaultFilterMessage() != null) {
-            defaultFilter.setSmallMessage(getDefaultFilterMessage());
-        }
+
         filters.add(defaultFilter);
     }
 
