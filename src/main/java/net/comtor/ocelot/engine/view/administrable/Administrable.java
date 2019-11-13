@@ -43,6 +43,7 @@ import net.comtor.ocelot.engine.components.forms.buttons.OcelotButton;
 import net.comtor.ocelot.engine.components.forms.buttons.advanced.DeleteButton;
 import net.comtor.ocelot.engine.components.forms.forms.AjaxForm;
 import net.comtor.ocelot.engine.util.icons.FontAwesome;
+import net.comtor.ocelot.engine.view.administrable.advanced.HtmlFormHelper;
 import net.comtor.ocelot.html.HtmlContainer;
 import net.comtor.ocelot.html.HtmlObject;
 import net.comtor.ocelot.html.IHtmlTag;
@@ -433,7 +434,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         E entity = (E) getBusinessService().getOne(id);
 
         getNewAndEditForm(form, entity);
-        form.fillForm(entity);
+        HtmlFormHelper.fillForm(form, entity);
 
         if (haveFiles()) {
             urlEndpoint = getControllerName() + "/editMultipart";
@@ -706,12 +707,7 @@ public abstract class Administrable<E, ID extends Serializable> {
     }
 
     protected void getFilters(LinkedList<HtmlObject> filters) {
-        BInputText defaultFilter = new BInputText("filter", getFilterTitle());
-
-        if (getDefaultFilterMessage() != null) {
-            defaultFilter.setSmallMessage(getDefaultFilterMessage());
-        }
-
+        BInputText defaultFilter = new BInputText( getFilterTitle(),"filter",getDefaultFilterMessage());
         filters.add(defaultFilter);
     }
 
@@ -1106,7 +1102,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         HtmlContainer container = new HtmlContainer();
 
         details.entrySet().forEach((entry) -> {
-            container.add(new BShowField("", entry.getKey(), entry.getValue()));
+            container.add(new BShowField(entry.getKey(), entry.getValue()));
         });
 
         container.add(new HtmlBr());

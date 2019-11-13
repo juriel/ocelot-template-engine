@@ -1,34 +1,52 @@
 package net.comtor.ocelot.engine.components.forms.forms;
 
-import java.util.LinkedHashMap;
-import net.comtor.ocelot.engine.components.forms.forms.advanced.OcelotFormObject;
-import net.comtor.ocelot.html.forms.HtmlForm;
-import net.comtor.ocelot.html.forms.inputs.HtmlInputHidden;
+import net.comtor.html.advanced.AbstractHtmlAdministrableFormElement;
+import net.comtor.html.advanced.HtmlAdministrableForm;
+import net.comtor.ocelot.html.forms.HtmlFormElement;
 
 /**
  *
  * @author Guido Cafiel
  */
-public class AjaxForm extends HtmlForm {
-
-    private LinkedHashMap<String, OcelotFormObject> formElements;
+public class AjaxForm extends AbstractHtmlAdministrableFormElement {
 
     public AjaxForm(String name) {
-        super(name);
+        setName(name);
         setId(name);
         addClass("ajaxForm");
-        formElements = new LinkedHashMap<>();
+
     }
 
-    public AjaxForm addMultipart() {
-        addAttribute("enctype", "multipart/form-data");;
+    @Override
+    public HtmlAdministrableForm addField(String id, String label, HtmlFormElement input, String help, String error) {
+        this.addField(id, label, input, help, error);
+
         return this;
     }
 
-   public void addInputHidden(String name, String value){
-       add(new HtmlInputHidden(name, value));
-   }
-    
+    public AjaxForm addSubmitWithIntro() {
+        addAttribute("validate-intro", "true");
+
+        return this;
+    }
+
+//    private LinkedHashMap<String, OcelotFormObject> formElements;
+//
+//    public AjaxForm(String name) {
+//        super(name);
+//        setId(name);
+//        addClass("ajaxForm");
+//        formElements = new LinkedHashMap<>();
+//    }
+//
+//    public AjaxForm addMultipart() {
+//        addAttribute("enctype", "multipart/form-data");;
+//        return this;
+//    }
+//
+//   public void addInputHidden(String name, String value){
+//       add(new HtmlInputHidden(name, value));
+//   }
 //    public void addIdField(BootstrapFormElement formElement) {
 //        this.addField(formElement, null, null, true);
 //    }
@@ -127,5 +145,4 @@ public class AjaxForm extends HtmlForm {
 //        addAttribute("validate-intro", "true");
 //        return this;
 //    }
-
 }

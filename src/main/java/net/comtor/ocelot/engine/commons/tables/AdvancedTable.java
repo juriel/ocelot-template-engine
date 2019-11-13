@@ -38,16 +38,17 @@ public class AdvancedTable extends HtmlTable {
             tr.add(new HtmlTh("#"));
         }
 
-        for (String k : headers.keySet()) {
-            HtmlTh th = new HtmlTh(headers.get(k));
+        for (String key : headers.keySet()) {
+            HtmlTh th = new HtmlTh(headers.get(key));
 
             tr.addAttribute("role", "row");
-            th.addAttribute("endpoint", k);
-            //tr.addAttribute(header, header);
+            th.addAttribute("endpoint", key);
+//            tr.addAttribute(header, header);
             tr.add(th);
         }
 
         thead.add(tr);
+
         this.add(thead);
     }
 
@@ -60,20 +61,22 @@ public class AdvancedTable extends HtmlTable {
         if (numeration) {
             tr.add(new HtmlTh("#"));
         }
-        for (String header : headers) {
+
+        headers.stream().forEach((header) -> {
             HtmlTh th = new HtmlTh(header);
 
             tr.addAttribute("role", "row");
             tr.addAttribute(header, header);
             tr.add(th);
-        }
+        });
 
         thead.add(tr);
+        
         this.add(thead);
     }
 
     @Override
-    public HtmlTable addHeaders(String... headers) {
+    public HtmlTable addHeaders(List<String> headers) {
         this.addClass("table table-striped table-bordered table-hover");
 
         HtmlThead thead = new HtmlThead();
@@ -82,27 +85,32 @@ public class AdvancedTable extends HtmlTable {
         if (numeration) {
             tr.add(new HtmlTh("#"));
         }
+        
         for (String header : headers) {
             HtmlTh th = new HtmlTh(header);
-
             tr.addAttribute("role", "row");
             tr.addAttribute(header, header);
+            
             tr.add(th);
         }
 
         thead.add(tr);
         this.add(thead);
+
         return this;
     }
 
     public void addElement(HtmlObject obj) {
         HtmlTr tr = new HtmlTr();
+
         if (numeration) {
             HtmlTd td = new HtmlTd((noRows++) + "");
             td.addAttribute("scope", "row");
             tr.add(td);
         }
+
         tr.add(new HtmlTd(obj));
+
         this.add(tr);
     }
 
@@ -112,45 +120,57 @@ public class AdvancedTable extends HtmlTable {
 
     public void addRow(List<Object> listRow) {
         HtmlTr tr = new HtmlTr();
+
         if (numeration) {
             HtmlTd td = new HtmlTd((noRows++) + "");
             td.addAttribute("scope", "row");
             tr.add(td);
         }
+
         for (Object object : listRow) {
             HtmlTd tdd = new HtmlTd(object + "");
+
             if (object instanceof Number) {
-                tdd.setStyle("text-align:right");
+                tdd.setStyle("text-align: right");
             }
+
             tr.add(tdd);
         }
+
         this.add(tr);
     }
 
     public void addRowTableDataElement(List<TableDataElement> elements) {
         HtmlTr tr = new HtmlTr();
+
         if (numeration) {
             HtmlTd td = new HtmlTd((noRows++) + "");
             td.addAttribute("scope", "row");
             tr.add(td);
         }
+
         for (TableDataElement dataElement : elements) {
             HtmlTd tdd = new HtmlTd(dataElement.getInsertObject() + "");
+
             if (dataElement.getOriginalObject() instanceof Number) {
                 tdd.setStyle("text-align:right");
             }
+
             tr.add(tdd);
         }
+
         this.add(tr);
     }
 
     public void addRowData(LinkedList<Object> listRow, LinkedList<HtmlObject> listOptions) {
         HtmlTr tr = new HtmlTr();
+
         if (numeration) {
             HtmlTd td = new HtmlTd((noRows++) + "");
             td.addAttribute("scope", "row");
             tr.add(td);
         }
+
         for (Object object : listRow) {
             HtmlTd tdd = new HtmlTd(object + "");
             tr.add(tdd);
@@ -162,6 +182,7 @@ public class AdvancedTable extends HtmlTable {
             for (HtmlObject listOption : listOptions) {
                 optionsTd.add(listOption);
             }
+
             optionsTd.setStyle("text-align:right");
             tr.add(optionsTd);
         }
@@ -169,18 +190,21 @@ public class AdvancedTable extends HtmlTable {
         this.add(tr);
     }
 
-    public void addRow(LinkedList<String> listRow, HtmlTr tr) {
-        HtmlTd td = new HtmlTd();
+    public void addRow(LinkedList<String> objects, HtmlTr row) {
+        HtmlTd cell = new HtmlTd();
+
         if (numeration) {
-            td.addEscapedText((noRows++) + "");
-            td.addAttribute("scope", "row");
-            tr.add(td);
+            cell.addEscapedText((noRows++) + "");
+            cell.addAttribute("scope", "row");
+
+            row.add(cell);
         }
-        for (String object : listRow) {
-            HtmlTd tdd = new HtmlTd(object);
-            tr.add(tdd);
+
+        for (String object : objects) {
+            row.add(new HtmlTd(object));
         }
-        this.add(tr);
+
+        this.add(row);
     }
 
 }
