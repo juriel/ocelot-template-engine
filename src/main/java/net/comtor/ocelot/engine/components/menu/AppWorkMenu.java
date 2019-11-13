@@ -40,7 +40,7 @@ public class AppWorkMenu extends HtmlContainer implements OcelotMenu {
         HtmlSpan spanTag = new HtmlSpan();
         spanTag.addClass("sidenav-link").addClass("sidenav-toggle");
         spanTag.add(getIcon(father.getIcon()).setStyle("margin-right:10px"));
-        spanTag.add(new HtmlDiv().addData(father.getLabel()));
+        spanTag.add(new HtmlDiv().addEscapedText(father.getLabel()));
         liFather.add(spanTag);
 
         if (!father.getMenuItems().isEmpty()) {
@@ -59,7 +59,7 @@ public class AppWorkMenu extends HtmlContainer implements OcelotMenu {
             HtmlLi childLi = new HtmlLi();
             childLi.addClass("sidenav-item");
 
-            HtmlSpan spanTag = new HtmlSpan(new HtmlDiv().addData(child.getLabel()));
+            HtmlSpan spanTag = new HtmlSpan(new HtmlDiv().addEscapedText(child.getLabel()));
             spanTag.addClass("sidenav-link").addClass("menu-item");
             spanTag.addAttribute("endpoint", child.getPath());
             childLi.add(spanTag);

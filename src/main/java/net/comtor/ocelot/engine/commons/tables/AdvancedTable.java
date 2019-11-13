@@ -72,7 +72,8 @@ public class AdvancedTable extends HtmlTable {
         this.add(thead);
     }
 
-    public void addHeaders(String... headers) {
+    @Override
+    public HtmlTable addHeaders(String... headers) {
         this.addClass("table table-striped table-bordered table-hover");
 
         HtmlThead thead = new HtmlThead();
@@ -91,6 +92,7 @@ public class AdvancedTable extends HtmlTable {
 
         thead.add(tr);
         this.add(thead);
+        return this;
     }
 
     public void addElement(HtmlObject obj) {
@@ -170,7 +172,7 @@ public class AdvancedTable extends HtmlTable {
     public void addRow(LinkedList<String> listRow, HtmlTr tr) {
         HtmlTd td = new HtmlTd();
         if (numeration) {
-            td.addData((noRows++) + "");
+            td.addEscapedText((noRows++) + "");
             td.addAttribute("scope", "row");
             tr.add(td);
         }
