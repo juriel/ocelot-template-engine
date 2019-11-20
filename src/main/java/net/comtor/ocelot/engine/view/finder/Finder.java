@@ -82,7 +82,7 @@ public abstract class Finder<E> {
         String params = "?";
 
         Map<String, String[]> map = request.getParameterMap();
-        
+
         for (Map.Entry<String, String[]> entry : map.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue()[0];
@@ -121,7 +121,7 @@ public abstract class Finder<E> {
         if (filterValues == null) {
             filterValues = getDefaultFilter();
         }
-        
+
         return getBusinessFacade().getWithFiltersForFinder(filterValues, pageable);
     }
 
@@ -129,7 +129,7 @@ public abstract class Finder<E> {
         Map<String, String[]> filters = new LinkedHashMap<>();
         String[] defFilter = {""};
         filters.put("filter", defFilter);
-        
+
         return filters;
     }
 
@@ -137,23 +137,20 @@ public abstract class Finder<E> {
         LinkedList<String> titles = new LinkedList<>();
         getTableTitles(titles);
         titles.add("Seleccionar");
-        
+
         return titles;
     }
 
     protected void getRowOptions(LinkedList<HtmlObject> optionsList, E entity) {
-        BButton select = new BButton(BColor.PRIMARY, getButtonSelectLabel());
-        select.setIcon("fas fa-check");
-        select.addAttribute("title", "Seleccionar");
-        String onclick = String.format("addValuesFinder('%1$s','%2$s','%3$s')", getFinderId(), getVisible(entity), getHidden(entity));
-        select.onClick(onclick);
-        select.addAttribute("type", "button");
-        select.addAttribute("data-dismiss", "modal");
-        optionsList.add(select);
-    }
-
-    private String getButtonSelectLabel() {
-        return "<span style='margin-right:5px'>Agregar</span>";
+        BButton button = new BButton(BColor.PRIMARY, "");
+        button.addEscapedText("Agregar");
+        button.setIcon("fas fa-check");
+        button.addAttribute("title", "Seleccionar");
+        String onclick = String.format("addValuesFinder('%1$s','%2$s','%3$s');", getFinderId(), getVisible(entity), getHidden(entity));
+        button.onClick(onclick);
+        button.addAttribute("type", "button");
+        button.addAttribute("data-dismiss", "modal");
+        optionsList.add(button);
     }
 
     private long getNumIndexOnPaginator() {
