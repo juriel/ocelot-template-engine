@@ -521,12 +521,12 @@ function pulsar(e) {
 }
 
 function addValuesFinder(field, visible_value, hidden_value) {
-    $("#" + field + "_visible").html(visible_value);
+    $("#" + field + "_visible").val(visible_value);
     $("#" + field).val(hidden_value);
 }
 
 function clearValuesFinder(field) {
-    $("#" + field + "_visible").html("");
+    $("#" + field + "_visible").val("");
     $("#" + field).val("");
 }
 

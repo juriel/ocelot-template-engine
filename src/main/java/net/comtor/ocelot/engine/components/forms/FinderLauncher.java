@@ -8,9 +8,8 @@ import net.comtor.ocelot.bootstrap.forms.BShowField;
  *
  * @author Guido Cafiel
  */
+//TODO: QUE QUEDE BONITO EL BOTON JUNTO AL INPUT
 public class FinderLauncher extends BShowField {
-
-    private static final String CONTROL_CLASS = "form-control-ocelot";
 
     private String myEndpoint;
     private BModalLauncherButton modalLauncherButton;
@@ -23,7 +22,7 @@ public class FinderLauncher extends BShowField {
 
         setStyle("height: 36px;");
 
-        getInput().setClass(CONTROL_CLASS);
+        getInput().setClass("form-control ocelot-finder-visible");
     }
 
     public FinderLauncher(String label, String name, String endpoint) {
@@ -36,7 +35,14 @@ public class FinderLauncher extends BShowField {
         return this;
     }
 
-    protected BModalLauncherButton getModalLauncher(String urlEndpoint) {
+    @Override
+    protected void preHtmlRender() {
+        getMainContainer().add(modalLauncherButton);
+
+        super.preHtmlRender();
+    }
+
+    private BModalLauncherButton getModalLauncher(String endpoint) {
         BModalLauncherButton button = new BModalLauncherButton("ocelotModal", "fas fa-search");
         button.addClass("btn")
                 .addClass("btn-primary")
@@ -44,15 +50,8 @@ public class FinderLauncher extends BShowField {
         button.setBColor(BColor.PRIMARY)
                 .setStyle("float: right")
                 .addClass("finderLauncher")
-                .addAttribute("endpoint", urlEndpoint);
+                .addAttribute("endpoint", endpoint);
 
         return button;
-    }
-
-    @Override
-    protected void preHtmlRender() {
-        add(modalLauncherButton);
-
-        super.preHtmlRender();
     }
 }
