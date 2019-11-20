@@ -434,7 +434,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         E entity = (E) getBusinessService().getOne(id);
 
         getNewAndEditForm(form, entity);
-        HtmlFormHelper.fillForm(form, entity);
+        fillFormOnEdit(form, entity);
 
         if (haveFiles()) {
             urlEndpoint = getControllerName() + "/editMultipart";
@@ -707,7 +707,7 @@ public abstract class Administrable<E, ID extends Serializable> {
     }
 
     protected void getFilters(LinkedList<HtmlObject> filters) {
-        BInputText defaultFilter = new BInputText( getFilterTitle(),"filter",getDefaultFilterMessage());
+        BInputText defaultFilter = new BInputText(getFilterTitle(), "filter", getDefaultFilterMessage());
         filters.add(defaultFilter);
     }
 
@@ -717,7 +717,7 @@ public abstract class Administrable<E, ID extends Serializable> {
 
     public HtmlObject getTableResult(HttpServletRequest request, Page<E> page, int actualPage) {
         HtmlContainer container = new HtmlContainer();
-        
+
         if (hasResultTitle()) {
             container.add(new HtmlH4(getResultsTitle()));
             container.add(new HtmlBr());
@@ -756,7 +756,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         getRow(rowData, entity);
         cleanValues(rowData);
         LinkedList<HtmlObject> optionsList = new LinkedList<>();
-        
+
         if (hasOptions()) {
             getRowOptions(request, optionsList, entity);
         }
@@ -771,11 +771,11 @@ public abstract class Administrable<E, ID extends Serializable> {
     protected LinkedHashMap<String, String> getTableTitles() {
         LinkedHashMap<String, String> titles = new LinkedHashMap<>();
         addTableTitles(titles);
-        
+
         if (hasOptions()) {
             titles.put("_options_", getOptionTitle());
         }
-        
+
         return titles;
     }
 
@@ -1128,6 +1128,15 @@ public abstract class Administrable<E, ID extends Serializable> {
 
     protected boolean hasResultTitle() {
         return true;
+    }
+
+    /**
+     * Init form with entity values
+     * @param form
+     * @param entity 
+     */
+    protected void fillFormOnEdit(AjaxForm form, E entity) {
+        HtmlFormHelper.fillForm(form, entity);
     }
 
 }
