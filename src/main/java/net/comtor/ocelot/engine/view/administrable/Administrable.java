@@ -717,6 +717,7 @@ public abstract class Administrable<E, ID extends Serializable> {
 
     public HtmlObject getTableResult(HttpServletRequest request, Page<E> page, int actualPage) {
         HtmlContainer container = new HtmlContainer();
+        
         if (hasResultTitle()) {
             container.add(new HtmlH4(getResultsTitle()));
             container.add(new HtmlBr());
@@ -755,6 +756,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         getRow(rowData, entity);
         cleanValues(rowData);
         LinkedList<HtmlObject> optionsList = new LinkedList<>();
+        
         if (hasOptions()) {
             getRowOptions(request, optionsList, entity);
         }
@@ -769,9 +771,11 @@ public abstract class Administrable<E, ID extends Serializable> {
     protected LinkedHashMap<String, String> getTableTitles() {
         LinkedHashMap<String, String> titles = new LinkedHashMap<>();
         addTableTitles(titles);
+        
         if (hasOptions()) {
             titles.put("_options_", getOptionTitle());
         }
+        
         return titles;
     }
 
@@ -780,8 +784,8 @@ public abstract class Administrable<E, ID extends Serializable> {
 
         for (HtmlObject htmlObject : optionsList) {
             if (htmlObject instanceof IHtmlTag) {
-                IHtmlTag t = (IHtmlTag) htmlObject;
-                t.setStyle("margin-right: 5px; margin-bottom: 5px;");
+                IHtmlTag tag = (IHtmlTag) htmlObject;
+                tag.setStyle("margin-right: 5px; margin-bottom: 5px;");
             }
         }
 

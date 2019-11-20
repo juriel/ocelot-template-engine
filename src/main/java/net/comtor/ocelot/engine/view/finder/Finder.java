@@ -82,11 +82,11 @@ public abstract class Finder<E> {
         String params = "?";
 
         Map<String, String[]> map = request.getParameterMap();
+        
         for (Map.Entry<String, String[]> entry : map.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue()[0];
             params += String.format("%1$s=%2$s&", key, value);
-
         }
 
         return params;
@@ -94,11 +94,12 @@ public abstract class Finder<E> {
 
     protected HtmlContainer getFormParams(HttpServletRequest request) {
         HtmlContainer container = new HtmlContainer();
-
         Map<String, String[]> map = request.getParameterMap();
+
         for (Map.Entry<String, String[]> entry : map.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue()[0];
+
             container.add(new HtmlInputHidden(key, value));
         }
 
@@ -120,6 +121,7 @@ public abstract class Finder<E> {
         if (filterValues == null) {
             filterValues = getDefaultFilter();
         }
+        
         return getBusinessFacade().getWithFiltersForFinder(filterValues, pageable);
     }
 
@@ -127,6 +129,7 @@ public abstract class Finder<E> {
         Map<String, String[]> filters = new LinkedHashMap<>();
         String[] defFilter = {""};
         filters.put("filter", defFilter);
+        
         return filters;
     }
 
@@ -134,6 +137,7 @@ public abstract class Finder<E> {
         LinkedList<String> titles = new LinkedList<>();
         getTableTitles(titles);
         titles.add("Seleccionar");
+        
         return titles;
     }
 
@@ -146,7 +150,6 @@ public abstract class Finder<E> {
         select.addAttribute("type", "button");
         select.addAttribute("data-dismiss", "modal");
         optionsList.add(select);
-
     }
 
     private String getButtonSelectLabel() {
@@ -163,7 +166,7 @@ public abstract class Finder<E> {
         container.add(new HtmlBr());
 
         HtmlDiv queryResult = new HtmlDiv(FINDER_QUERY_RESULT);
-        queryResult.setStyle("overflow:auto");
+        queryResult.setStyle("overflow: auto");
 
         if (page.getContent().isEmpty()) {
             HtmlContainer divConten = new HtmlContainer();
@@ -196,6 +199,7 @@ public abstract class Finder<E> {
 
             queryResult.add(table);
         }
+
         String urlEndpoint = getFinderName() + "/search";
 
         if (page.getTotalPages() > 0) {
@@ -219,8 +223,10 @@ public abstract class Finder<E> {
 
     @ResponseBody
     @RequestMapping("/{default_id}/{parent_id}")
-    public List<MapResponse> mainViewWithParentId(@PathVariable("default_id") String defaultId, @PathVariable("parent_id") Object parentId, HttpServletRequest request) {
+    public List<MapResponse> mainViewWithParentId(@PathVariable("default_id") String defaultId,
+            @PathVariable("parent_id") Object parentId, HttpServletRequest request) {
         this.idParent = parentId;
+
         return getMainView(defaultId, request);
     }
 
@@ -232,7 +238,9 @@ public abstract class Finder<E> {
         processRequest(request);
         this.defaultFinderId = defaultId;
         HtmlContainer container = new HtmlContainer();
+
         container.add(new HtmlBr());
+
         if (getSubTitle() != null) {
             container.add(new HtmlP(getSubTitle()));
             container.add(new HtmlBr());
@@ -244,11 +252,13 @@ public abstract class Finder<E> {
         AjaxForm contenForm = new AjaxForm(FINDER_FORM);
         contenForm.add(getFormParams(request));
         contenForm.addAttribute("validate-intro", "true");
-        for (HtmlObject filter : filters) {
-            contenForm.add(filter);
-        }
 
-        PostButton searchButton = new PostButton(BColor.PRIMARY, "Buscar", FINDER_FORM, getFinderName() + "/search/0" + getUrlParams(request), false);
+        filters.stream().forEach((filter) -> {
+            contenForm.add(filter);
+        });
+
+        PostButton searchButton = new PostButton(BColor.PRIMARY, "Buscar", FINDER_FORM,
+                getFinderName() + "/search/0" + getUrlParams(request), false);
         searchButton.setIconClass("fas fa-search");
 
         contenForm.add(searchButton);
@@ -266,19 +276,22 @@ public abstract class Finder<E> {
         List<MapResponse> options = new LinkedList<>();
         options.add(new MapResponse(FINDER_TITLE, getFinderTitle()));
         options.add(new MapResponse(FINDER_BODY, container.getHtml()));
+
         return options;
     }
 
     public Page<E> getQueryResult(HttpServletRequest request) {
         PageRequest page = new PageRequest(0, getNumRowsToView());
         Map<String, String[]> filtersMap = null;
-        if (getDefaultFilter() != null) {
-            filtersMap = getDefaultFilter();
-        } else {
+
+        if (getDefaultFilter() == null) {
             filtersMap = request.getParameterMap();
             String[] filterValue = {""};
             filtersMap.put("filter", filterValue);
+        } else {
+            filtersMap = getDefaultFilter();
         }
+
         return getBusinessFacade().getWithFiltersForFinder(filtersMap, page);
     }
 
@@ -292,6 +305,7 @@ public abstract class Finder<E> {
         List<MapResponse> options = new LinkedList<>();
         options.add(new MapResponse(FINDER_TITLE, getFinderTitle()));
         options.add(new MapResponse(FINDER_TABLE_RESULT, getTableResult(request, page, pag).getHtml()));
+
         return options;
     }
 
@@ -303,12 +317,12 @@ public abstract class Finder<E> {
         return this.idParent;
     }
 
-    public FinderLauncher getFinderLauncher(String name, String label, String hidden, String visible) {
-        return new FinderLauncher(name, label, hidden, visible, getFinderName());
+    public FinderLauncher getFinderLauncher(String label, String showValue, String name, String hiddenValue) {
+        return new FinderLauncher(label, showValue, name, hiddenValue, getFinderName());
     }
 
-    public FinderLauncher getFinderLauncher(String name, String label) {
-        return new FinderLauncher(name, label, getFinderName());
+    public FinderLauncher getFinderLauncher(String label, String name) {
+        return new FinderLauncher(label, name, getFinderName());
     }
 
 }

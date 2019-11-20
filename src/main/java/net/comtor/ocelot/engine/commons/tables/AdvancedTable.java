@@ -31,87 +31,88 @@ public class AdvancedTable extends HtmlTable {
     public void addHeaders(LinkedHashMap<String, String> headers) {
         this.addClass("table table-striped table-bordered table-hover");
 
-        HtmlThead thead = new HtmlThead();
-        HtmlTr tr = new HtmlTr();
+        HtmlThead tableHead = new HtmlThead();
+        HtmlTr tableRow = new HtmlTr();
 
         if (numeration) {
-            tr.add(new HtmlTh("#"));
+            tableRow.add(new HtmlTh("#"));
         }
 
         for (String key : headers.keySet()) {
-            HtmlTh th = new HtmlTh(headers.get(key));
+            HtmlTh tableHeader = new HtmlTh(headers.get(key));
+            tableHeader.addAttribute("endpoint", key);
 
-            tr.addAttribute("role", "row");
-            th.addAttribute("endpoint", key);
-//            tr.addAttribute(header, header);
-            tr.add(th);
+            tableRow.addAttribute("role", "row");
+            tableRow.add(tableHeader);
         }
 
-        thead.add(tr);
+        tableHead.add(tableRow);
 
-        this.add(thead);
+        this.add(tableHead);
     }
 
     public void addHeaders(LinkedList<String> headers) {
         this.addClass("table table-striped table-bordered table-hover");
 
-        HtmlThead thead = new HtmlThead();
-        HtmlTr tr = new HtmlTr();
+        HtmlThead tableHead = new HtmlThead();
+        HtmlTr tableRow = new HtmlTr();
 
         if (numeration) {
-            tr.add(new HtmlTh("#"));
+            tableRow.add(new HtmlTh("#"));
         }
 
         headers.stream().forEach((header) -> {
-            HtmlTh th = new HtmlTh(header);
+            HtmlTh tableHeader = new HtmlTh(header);
 
-            tr.addAttribute("role", "row");
-            tr.addAttribute(header, header);
-            tr.add(th);
+            tableRow.addAttribute("role", "row");
+            tableRow.addAttribute(header, header);
+            tableRow.add(tableHeader);
         });
 
-        thead.add(tr);
-        
-        this.add(thead);
+        tableHead.add(tableRow);
+
+        this.add(tableHead);
     }
 
     @Override
     public HtmlTable addHeaders(List<String> headers) {
         this.addClass("table table-striped table-bordered table-hover");
 
-        HtmlThead thead = new HtmlThead();
-        HtmlTr tr = new HtmlTr();
+        HtmlThead tableHead = new HtmlThead();
+        HtmlTr tableRow = new HtmlTr();
 
         if (numeration) {
-            tr.add(new HtmlTh("#"));
-        }
-        
-        for (String header : headers) {
-            HtmlTh th = new HtmlTh(header);
-            tr.addAttribute("role", "row");
-            tr.addAttribute(header, header);
-            
-            tr.add(th);
+            tableRow.add(new HtmlTh("#"));
         }
 
-        thead.add(tr);
-        this.add(thead);
+        for (String header : headers) {
+            HtmlTh tableHeader = new HtmlTh(header);
+            tableRow.addAttribute("role", "row");
+            tableRow.addAttribute(header, header);
+
+            tableRow.add(tableHeader);
+        }
+
+        tableHead.add(tableRow);
+        
+        this.add(tableHead);
 
         return this;
     }
 
     public void addElement(HtmlObject obj) {
-        HtmlTr tr = new HtmlTr();
+        HtmlTr tableRow = new HtmlTr();
 
         if (numeration) {
-            HtmlTd td = new HtmlTd((noRows++) + "");
-            td.addAttribute("scope", "row");
-            tr.add(td);
+            HtmlTd tableData = new HtmlTd((noRows++) + "");
+            tableData.addAttribute("scope", "row");
+
+            tableRow.add(tableData);
         }
 
-        tr.add(new HtmlTd(obj));
+        tableRow.add(new HtmlTd(obj));
 
-        this.add(tr);
+        this.add(tableRow);
     }
 
     public void addRowElements(Object... objects) {
@@ -119,85 +120,96 @@ public class AdvancedTable extends HtmlTable {
     }
 
     public void addRow(List<Object> listRow) {
-        HtmlTr tr = new HtmlTr();
+        HtmlTr tableRow = new HtmlTr();
 
         if (numeration) {
-            HtmlTd td = new HtmlTd((noRows++) + "");
-            td.addAttribute("scope", "row");
-            tr.add(td);
+            HtmlTd tableData = new HtmlTd((noRows++) + "");
+            tableData.addAttribute("scope", "row");
+
+            tableRow.add(tableData);
         }
 
         for (Object object : listRow) {
-            HtmlTd tdd = new HtmlTd(object + "");
+            HtmlTd tableData;
 
-            if (object instanceof Number) {
-                tdd.setStyle("text-align: right");
+            if (object instanceof HtmlObject) {
+                HtmlObject o = (HtmlObject) object;
+
+                tableData = new HtmlTd(o);
+            } else {
+                tableData = new HtmlTd(object + "");
+
+                if (object instanceof Number) {
+                    tableData.setStyle("text-align: right");
+                }
             }
 
-            tr.add(tdd);
+            tableRow.add(tableData);
         }
 
-        this.add(tr);
+        this.add(tableRow);
     }
 
     public void addRowTableDataElement(List<TableDataElement> elements) {
-        HtmlTr tr = new HtmlTr();
+        HtmlTr tableRow = new HtmlTr();
 
         if (numeration) {
-            HtmlTd td = new HtmlTd((noRows++) + "");
-            td.addAttribute("scope", "row");
-            tr.add(td);
+            HtmlTd tableData = new HtmlTd((noRows++) + "");
+            tableData.addAttribute("scope", "row");
+
+            tableRow.add(tableData);
         }
 
         for (TableDataElement dataElement : elements) {
-            HtmlTd tdd = new HtmlTd(dataElement.getInsertObject() + "");
+            HtmlTd tableData = new HtmlTd(dataElement.getInsertObject() + "");
 
             if (dataElement.getOriginalObject() instanceof Number) {
-                tdd.setStyle("text-align:right");
+                tableData.setStyle("text-align: right");
             }
 
-            tr.add(tdd);
+            tableRow.add(tableData);
         }
 
-        this.add(tr);
+        this.add(tableRow);
     }
 
     public void addRowData(LinkedList<Object> listRow, LinkedList<HtmlObject> listOptions) {
-        HtmlTr tr = new HtmlTr();
+        HtmlTr tableRow = new HtmlTr();
 
         if (numeration) {
-            HtmlTd td = new HtmlTd((noRows++) + "");
-            td.addAttribute("scope", "row");
-            tr.add(td);
+            HtmlTd tableData = new HtmlTd((noRows++) + "");
+            tableData.addAttribute("scope", "row");
+
+            tableRow.add(tableData);
         }
 
         for (Object object : listRow) {
-            HtmlTd tdd = new HtmlTd(object + "");
-            tr.add(tdd);
+            HtmlTd tableData = new HtmlTd(object + "");
+            tableRow.add(tableData);
         }
 
         if (!listOptions.isEmpty()) {
-            HtmlTd optionsTd = new HtmlTd();
+            HtmlTd optionsCell = new HtmlTd();
 
             for (HtmlObject listOption : listOptions) {
-                optionsTd.add(listOption);
+                optionsCell.add(listOption);
             }
 
-            optionsTd.setStyle("text-align:right");
-            tr.add(optionsTd);
+            optionsCell.setStyle("text-align:right");
+            tableRow.add(optionsCell);
         }
 
-        this.add(tr);
+        this.add(tableRow);
     }
 
     public void addRow(LinkedList<String> objects, HtmlTr row) {
-        HtmlTd cell = new HtmlTd();
+        HtmlTd tableData = new HtmlTd();
 
         if (numeration) {
-            cell.addEscapedText((noRows++) + "");
-            cell.addAttribute("scope", "row");
+            tableData.addEscapedText((noRows++) + "");
+            tableData.addAttribute("scope", "row");
 
-            row.add(cell);
+            row.add(tableData);
         }
 
         for (String object : objects) {

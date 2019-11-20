@@ -12,16 +12,17 @@ public class FinderLauncher extends BShowField {
 
     private static final String CONTROL_CLASS = "form-control-ocelot";
 
-    private String endpoint;
+    private String myEndpoint;
     private BModalLauncherButton modalLauncherButton;
 
     public FinderLauncher(String label, String showValue, String name, String hiddenValue, String endpoint) {
         super(label, showValue, name, hiddenValue);
 
-        this.endpoint = endpoint + "/" + name;
-        modalLauncherButton = getModalLauncher(endpoint);
-//TODO:
-//        getFormElementContainer().setStyle("height: 36px");
+        myEndpoint = endpoint + "/" + name;
+        modalLauncherButton = getModalLauncher(myEndpoint);
+
+        setStyle("height: 36px;");
+
         getInput().setClass(CONTROL_CLASS);
     }
 
@@ -30,7 +31,7 @@ public class FinderLauncher extends BShowField {
     }
 
     public FinderLauncher addParamsToEndpoint(String urlParams) {
-        modalLauncherButton.addAttribute("endpoint", endpoint + "?" + urlParams);
+        modalLauncherButton.addAttribute("endpoint", myEndpoint + "?" + urlParams);
 
         return this;
     }
@@ -40,10 +41,10 @@ public class FinderLauncher extends BShowField {
         button.addClass("btn")
                 .addClass("btn-primary")
                 .addClass("ml-3");
-        button.setBColor(BColor.PRIMARY);
-        button.setStyle("float: right");
-        button.addClass("finderLauncher");
-        button.addAttribute("endpoint", urlEndpoint);
+        button.setBColor(BColor.PRIMARY)
+                .setStyle("float: right")
+                .addClass("finderLauncher")
+                .addAttribute("endpoint", urlEndpoint);
 
         return button;
     }

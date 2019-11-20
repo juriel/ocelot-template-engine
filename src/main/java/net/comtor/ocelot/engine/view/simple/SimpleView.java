@@ -48,6 +48,7 @@ public abstract class SimpleView extends WebView {
     protected LinkedList<AjaxButton> getButtons() {
         LinkedList<AjaxButton> buttons = new LinkedList<>();
         addButtons(buttons);
+        
         return buttons;
     }
 
@@ -89,18 +90,20 @@ public abstract class SimpleView extends WebView {
     protected List<MapResponse> getMainView(HttpServletRequest request) {
         List<MapResponse> options = new LinkedList<>();
 
-        if (getViewPrivilege() != null && !OcelotSecurityManager.isAuthorized(getViewPrivilege())) {
-
+        if ((getViewPrivilege() != null) && !OcelotSecurityManager.isAuthorized(getViewPrivilege())) {
             BAlertDanger error = new BAlertDanger(getNoPrivilegesAlertTitle());
             options.add(new MapResponse(OCELOT_HIDDEN_ALERT, error.getHtml()));
+
             return options;
         }
 
         HtmlContainer container = new HtmlContainer();
         BCard card = new BCard(getIconClass(), getTitle());
+
         for (HtmlTag htmlTag : addToHeader()) {
             card.addToHeader(htmlTag);
         }
+
         getButtons().forEach((mercuryButton) -> {
             card.addToHeader(mercuryButton);
         });
@@ -121,6 +124,7 @@ public abstract class SimpleView extends WebView {
         HtmlContainer viewContainer = new HtmlContainer();
 
         getViewContent(request, viewContainer);
+
         if (isTwoColumns()) {
             viewContainer.getContentObjects().forEach((htmlObject) -> {
                 if (htmlObject instanceof IHtmlTag) {
@@ -151,6 +155,7 @@ public abstract class SimpleView extends WebView {
         }
 
         options.add(new MapResponse(getContentDivId(), container.getHtml()));
+
         return options;
     }
 
