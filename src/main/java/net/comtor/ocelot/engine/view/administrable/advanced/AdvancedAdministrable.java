@@ -48,7 +48,7 @@ public abstract class AdvancedAdministrable<E, ID extends Serializable> extends 
     }
 
     @Override
-     public ID getId(E entity) {
+    public ID getId(E entity) {
         Class<? extends Object> clazz = entity.getClass();
         Field[] fields = clazz.getDeclaredFields();
 
@@ -68,7 +68,7 @@ public abstract class AdvancedAdministrable<E, ID extends Serializable> extends 
         return null;
     }
 
-    private ID runGetter(Field field, E entity) throws IllegalAccessException,  IllegalArgumentException, InvocationTargetException {
+    private ID runGetter(Field field, E entity) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         String fieldName = field.getName();
         Method[] methods = entity.getClass().getMethods();
 

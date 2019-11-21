@@ -58,6 +58,8 @@ public final class FontAwesome {
         public static final String THUMBS_UP = PREFIX + "thumbs-up";
         public static final String THUMBS_DOWN = PREFIX + "thumbs-down";
         public static final String TRUCK = PREFIX + "truck";
+        public static final String ADDRESS_CARD = PREFIX + "fas fa-address-card";
+        public static final String HARD_HAT = PREFIX + "fas fa-hard-hat";
     }
 
     public final class Regular {

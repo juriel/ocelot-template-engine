@@ -30,7 +30,7 @@ public abstract class WebView {
     public String getControllerName() {
         Class<? extends WebView> clazz = this.getClass();
         Annotation[] anotations = clazz.getAnnotations();
-        
+
         for (Annotation annotation : anotations) {
             if (annotation instanceof org.springframework.web.bind.annotation.RequestMapping) {
                 RequestMapping requestMappingAn = (RequestMapping) annotation;
@@ -43,7 +43,7 @@ public abstract class WebView {
                 return controllerName;
             }
         }
-        
+
         return null;
     }
 
@@ -52,11 +52,11 @@ public abstract class WebView {
     }
 
     protected AjaxButton getBackButton(HttpServletRequest request) {
-        AjaxButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(), 
+        AjaxButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(),
                 getEndpointFormat(getOriginController()));
         backButton.setIconClass("fas fa-arrow-alt-circle-left");
         backButton.setStyle("float: right");
-        
+
         return backButton;
     }
 
@@ -67,7 +67,7 @@ public abstract class WebView {
     protected abstract void addJsResources(List<String> paths);
 
     @InitBinder
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) 
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
             throws Exception {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateFormat.setLenient(true);
@@ -81,7 +81,7 @@ public abstract class WebView {
         String path = "";
         LinkedHashMap<String, String> params = new LinkedHashMap<>();
         addViewParams(params);
-       
+
         for (Map.Entry<String, String> entry : params.entrySet()) {
             String key = entry.getKey();
             String val = entry.getValue();
