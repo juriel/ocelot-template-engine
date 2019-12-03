@@ -60,6 +60,7 @@ public final class FontAwesome {
         public static final String TRUCK = PREFIX + "truck";
         public static final String ADDRESS_CARD = PREFIX + "fas fa-address-card";
         public static final String HARD_HAT = PREFIX + "fas fa-hard-hat";
+        public static final String MAP_MARKER_ALT = "fas fa-map-marker-alt";
     }
 
     public final class Regular {
