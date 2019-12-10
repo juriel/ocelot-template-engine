@@ -3,22 +3,26 @@ package net.comtor.ocelot.engine.components.forms;
 import net.comtor.ocelot.bootstrap.commons.BColor;
 import net.comtor.ocelot.bootstrap.components.buttons.BModalLauncherButton;
 import net.comtor.ocelot.bootstrap.forms.BShowField;
+import net.comtor.ocelot.bootstrap.forms.buttons.BButton;
+import net.comtor.ocelot.engine.util.icons.FontAwesome;
+import net.comtor.ocelot.html.styles.HtmlSpan;
 
 /**
  *
  * @author Guido Cafiel
  */
-//TODO: QUE QUEDE BONITO EL BOTON JUNTO AL INPUT
 public class FinderLauncher extends BShowField {
 
     private String myEndpoint;
     private BModalLauncherButton modalLauncherButton;
+    private BButton clearFinderButton;
 
     public FinderLauncher(String label, String showValue, String name, String hiddenValue, String endpoint) {
         super(label, showValue, name, hiddenValue);
 
         myEndpoint = endpoint + "/" + name;
         modalLauncherButton = getModalLauncher(myEndpoint);
+        clearFinderButton = getClearFinderButton(name);
 
         setStyle("height: 36px;");
 
@@ -37,21 +41,36 @@ public class FinderLauncher extends BShowField {
 
     @Override
     protected void preHtmlRender() {
-        getMainContainer().add(modalLauncherButton);
+        HtmlSpan row = new HtmlSpan();
+        row.add(modalLauncherButton).add(clearFinderButton);
+
+        getMainContainer().add(row);
 
         super.preHtmlRender();
     }
 
     private BModalLauncherButton getModalLauncher(String endpoint) {
-        BModalLauncherButton button = new BModalLauncherButton("ocelotModal", "fas fa-search");
+        BModalLauncherButton button = new BModalLauncherButton("ocelotModal", FontAwesome.Solid.SEARCH);
         button.addClass("btn")
                 .addClass("btn-primary")
                 .addClass("ml-3");
         button.setBColor(BColor.PRIMARY)
-                .setStyle("float: right")
                 .addClass("finderLauncher")
                 .addAttribute("endpoint", endpoint);
 
         return button;
+    }
+
+    private BButton getClearFinderButton(String fieldId) {
+        BButton clearButton = new BButton(BColor.DANGER, "");
+        clearButton.addClass("btn")
+                .addClass("btn-primary")
+                .addClass("ml-3");
+        clearButton.setIcon(FontAwesome.Solid.BROOM);
+        clearButton.addAttribute("title", "Limpiar valor");
+        clearButton.onClick("clearValuesFinder('" + fieldId + "');");
+        clearButton.addAttribute("type", "button");
+
+        return clearButton;
     }
 }

@@ -65,7 +65,6 @@ $(document).ready(function() {
     $(".menu-item").css("cursor", "pointer");
 });
 
-
 $(document).on("keyup", '.ajaxForm', function(e) {
     var key = (document.all) ? e.keyCode : e.which;
     
@@ -520,7 +519,7 @@ function pulsar(e) {
     return (tecla != 13);
 }
 
-function addValuesFinder(field, visible_value, hidden_value) {
+function addValuesFinder(field, visible_value, hidden_value) {   
     $("#" + field + "_visible").val(visible_value);
     $("#" + field).val(hidden_value);
 }

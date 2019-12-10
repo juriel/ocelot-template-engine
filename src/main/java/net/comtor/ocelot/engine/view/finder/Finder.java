@@ -17,6 +17,7 @@ import net.comtor.ocelot.bootstrap.commons.BColor;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertWarning;
 import net.comtor.ocelot.bootstrap.forms.buttons.BButton;
 import net.comtor.ocelot.bootstrap.forms.inputs.BInputText;
+import net.comtor.ocelot.engine.util.icons.FontAwesome;
 import net.comtor.ocelot.html.HtmlContainer;
 import net.comtor.ocelot.html.HtmlObject;
 import net.comtor.ocelot.html.basic.HtmlBr;
@@ -144,7 +145,7 @@ public abstract class Finder<E> {
     protected void getRowOptions(LinkedList<HtmlObject> optionsList, E entity) {
         BButton button = new BButton(BColor.PRIMARY, "");
         button.addEscapedText("Agregar");
-        button.setIcon("fas fa-check");
+        button.setIcon(FontAwesome.Solid.CHECK);
         button.addAttribute("title", "Seleccionar");
         String onclick = String.format("addValuesFinder('%1$s','%2$s','%3$s');", getFinderId(), getVisible(entity), getHidden(entity));
         button.onClick(onclick);
@@ -256,7 +257,7 @@ public abstract class Finder<E> {
 
         PostButton searchButton = new PostButton(BColor.PRIMARY, "Buscar", FINDER_FORM,
                 getFinderName() + "/search/0" + getUrlParams(request), false);
-        searchButton.setIconClass("fas fa-search");
+        searchButton.setIconClass(FontAwesome.Solid.SEARCH);
 
         contenForm.add(searchButton);
 

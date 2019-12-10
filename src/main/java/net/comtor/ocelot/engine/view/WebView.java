@@ -10,6 +10,7 @@ import net.comtor.ocelot.bootstrap.commons.BColor;
 import net.comtor.ocelot.engine.commons.MapResponse;
 import net.comtor.ocelot.engine.components.forms.buttons.AjaxButton;
 import net.comtor.ocelot.engine.components.forms.buttons.GetButton;
+import net.comtor.ocelot.engine.util.icons.FontAwesome;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,7 +55,7 @@ public abstract class WebView {
     protected AjaxButton getBackButton(HttpServletRequest request) {
         AjaxButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(),
                 getEndpointFormat(getOriginController()));
-        backButton.setIconClass("fas fa-arrow-alt-circle-left");
+        backButton.setIconClass(FontAwesome.Solid.ARROW_ALT_CIRCLE_LEFT);
         backButton.setStyle("float: right");
 
         return backButton;
