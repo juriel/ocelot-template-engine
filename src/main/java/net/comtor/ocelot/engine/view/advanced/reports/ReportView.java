@@ -75,10 +75,7 @@ public abstract class ReportView extends SimpleView {
     }
 
     protected PostButton getSendFiltersButton(String formName) {
-        PostButton sendFilters = new PostButton(BColor.PRIMARY, "Consultar",
-                formName, getControllerName() + "/filter", false);
-
-        return sendFilters;
+        return new PostButton(BColor.PRIMARY, "Consultar", formName, getControllerName() + "/filter", false);
     }
 
     protected void addFilters(AjaxForm form) {
@@ -92,14 +89,17 @@ public abstract class ReportView extends SimpleView {
         container.add(getFiltersForm());
         container.add(new HtmlHr());
         container.add(new HtmlH4(getTableTitle()));
+
         HtmlDiv div = getDivResults();
         div.add(new BAlertInfo("Use los filtros para generar el reporte"));
+
         container.add(div);
     }
 
     protected HtmlDiv getDivResults() {
         HtmlDiv div = new HtmlDiv("table_result");
         div.addClass("report-result");
+
         return div;
     }
 
@@ -116,15 +116,13 @@ public abstract class ReportView extends SimpleView {
         List<HtmlTag> list = new LinkedList<>();
 
         if (downloadInXlsx()) {
-            HtmlDiv contentDiv = new HtmlDiv("donwload_button_div");
-            list.add(contentDiv);
+            list.add(new HtmlDiv("donwload_button_div"));
         }
 
         return list;
     }
 
-    public HtmlTag getDownloadButton(HttpServletRequest request)
-            throws UnsupportedEncodingException {
+    public HtmlTag getDownloadButton(HttpServletRequest request) throws UnsupportedEncodingException {
         Map<String, String[]> map = request.getParameterMap();
 
         String params = "?";
@@ -136,13 +134,8 @@ public abstract class ReportView extends SimpleView {
         }
 
         String urlEndpoint = getControllerName() + "/xlsx" + params;
-        DownloadButton downloadXlsx = new DownloadButton(
-                urlEndpoint,
-                "Descargar XLSX",
-                BColor.SUCCESS,
-                FontAwesome.Solid.FILE_EXCEL);
 
-        return downloadXlsx;
+        return new DownloadButton(urlEndpoint, "Descargar XLSX", BColor.SUCCESS, FontAwesome.Solid.FILE_EXCEL);
     }
 
     @ResponseBody
@@ -150,19 +143,13 @@ public abstract class ReportView extends SimpleView {
     protected List<MapResponse> getTableResult(HttpServletRequest request) throws SQLException {
         List<MapResponse> response = new LinkedList<>();
         preparedQuery = getPreparedQuery(request);
-        ResultSet rs = getResultSetFromQuery();
 
-        try {
-            response.add(new MapResponse(OCELOT_DEFAULT_ALERT,
-                    new BAlertSuccess("Se ha realizado la consulta de forma exitosa.").getHtml()));
+        try (ResultSet rs = getResultSetFromQuery()) {
+            response.add(new MapResponse(OCELOT_DEFAULT_ALERT, new BAlertSuccess("Se ha realizado la consulta de forma exitosa.").getHtml()));
             response.add(new MapResponse("table_result", getResults(rs).getHtml()));
             response.add(new MapResponse("donwload_button_div", getDownloadButton(request).getHtml()));
         } catch (UnsupportedEncodingException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
         }
 
         return response;
@@ -170,14 +157,12 @@ public abstract class ReportView extends SimpleView {
 
     @ResponseBody
     @RequestMapping("/xlsx")
-    protected void downloadXlsx(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException {
+    protected void downloadXlsx(HttpServletRequest request, HttpServletResponse response) throws SQLException {
         preparedQuery = getPreparedQuery(request);
 
-        ResultSet rs = getResultSetFromQuery();
-        String fileName = "report" + System.currentTimeMillis() + ".xlsx";
+        try (ResultSet rs = getResultSetFromQuery()) {
+            String fileName = getFilename();
 
-        try {
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
@@ -187,28 +172,38 @@ public abstract class ReportView extends SimpleView {
             response.flushBuffer();
         } catch (IOException ex) {
             throw new RuntimeException("IOError writing file to output stream");
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
         }
     }
 
-    protected HtmlObject getResults(ResultSet resultSet) throws SQLException {
+    protected String getFilename() {
+        return "report" + System.currentTimeMillis() + ".xlsx";
+    }
+
+    protected HtmlObject getResults(ResultSet rs) throws SQLException {
         HtmlContainer container = new HtmlContainer();
-        container.add(getTableResult(resultSet));
+
+        if (!rs.next()) {
+            return new BAlertInfo("No se encontraron resultados.");
+        }
+
+        container.add(getTableResult(rs));
+
         return container;
     }
 
-    protected AdvancedTable getTableResult(ResultSet resultSet) throws SQLException {
+    protected AdvancedTable getTableResult(ResultSet rs) throws SQLException {
         AdvancedTable table = new AdvancedTable(false);
-        table.addHeaders(getColumnNames(resultSet));
+        table.addHeaders(getColumnNames(rs));
 
-        while (resultSet.next()) {
-            List<TableDataElement> rowData = new LinkedList<>();
+        List<TableDataElement> rowData;
 
-            for (String index : getIndex(resultSet)) {
-                TableDataElement tableDataElement = getValueFromResultSet(resultSet, index);
+        rs.beforeFirst();
+
+        while (rs.next()) {
+            rowData = new LinkedList<>();
+
+            for (String index : getIndex(rs)) {
+                TableDataElement tableDataElement = getValueFromResultSet(rs, index);
                 rowData.add(tableDataElement);
             }
 
@@ -253,6 +248,7 @@ public abstract class ReportView extends SimpleView {
 
     protected ResultSet getResultSetFromQuery() throws SQLException {
         Connection conn = getDataSource().getConnection();
+
         PreparedStatement ps = conn.prepareStatement(preparedQuery.getSql(), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         fillPreparedStatement(ps);
 
