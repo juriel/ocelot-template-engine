@@ -157,7 +157,6 @@ public abstract class BusinessService<E, ID extends Serializable> {
      * @return
      */
     public E save(E newE) throws OcelotException {
-
         LinkedHashMap<String, List<String>> errors = validateEntity(newE);
         if (!errors.isEmpty()) {
             throw new OcelotException(errors);
@@ -165,7 +164,7 @@ public abstract class BusinessService<E, ID extends Serializable> {
         return getDao().save(newE);
     }
 
-    protected LinkedHashMap<String, List<String>> validateEntity(E e) {
+    public LinkedHashMap<String, List<String>> validateEntity(E e) {
         LinkedHashMap<String, List<String>> errorsMap = new LinkedHashMap<>();
         Class clazz = e.getClass();
         Field[] fields = clazz.getDeclaredFields();
@@ -190,9 +189,8 @@ public abstract class BusinessService<E, ID extends Serializable> {
                                 errors.add("El campo debe ser menor a " + sizeAnnotation.max() + " caracter.");
                             }
                         }
-
                     } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                        Logger.getLogger(BusinessService.class.getName()).log(Level.SEVERE, null, ex);
+                        LOG.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }
 
@@ -286,17 +284,13 @@ public abstract class BusinessService<E, ID extends Serializable> {
             Field[] fields = clazz.getDeclaredFields();
 
             for (Field field : fields) {
-                if (field.isAnnotationPresent(javax.persistence.Column.class
-                )) {
+                if (field.isAnnotationPresent(javax.persistence.Column.class)) {
                     String canonical = field.getType().getCanonicalName();
 
-                    if (isJavaNumber(canonical)
-                            && isNumber(token)) {
+                    if (isJavaNumber(canonical) && isNumber(token)) {
                         orPredicates.add(cb.equal(myEntity.get(field.getName()), token));
-                    } else if (canonical.equals(
-                            "java.lang.String")) {
-                        orPredicates.add(cb.like(cb.upper(myEntity.get(field.getName())),
-                                "%" + token.toUpperCase() + "%"));
+                    } else if (canonical.equals("java.lang.String")) {
+                        orPredicates.add(cb.like(cb.upper(myEntity.get(field.getName())), "%" + token.toUpperCase() + "%"));
                     }
                 }
             }
@@ -372,10 +366,10 @@ public abstract class BusinessService<E, ID extends Serializable> {
         return null;
     }
 
-    public E fillSavedObject(E toEdit)  throws OcelotException {
+    public E fillSavedObject(E toEdit) throws OcelotException {
         E saved = findOne(getId(toEdit));
-        if (saved == null){
-            throw  new OcelotException("Can't find object to Edit ");
+        if (saved == null) {
+            throw new OcelotException("Can't find object to Edit ");
         }
 
         try {
