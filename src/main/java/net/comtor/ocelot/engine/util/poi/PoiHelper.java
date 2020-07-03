@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.comtor.ocelot.engine.util.poi;
 
 import java.sql.Timestamp;
@@ -111,8 +106,7 @@ public class PoiHelper {
     }
 
     /**
-     * Le va la madre al que use esta funcion para sacar valores de una hoja de
-     * excel en un cargue.
+     * Le va la madre al que use esta funcion para sacar valores de una hoja de excel en un cargue.
      *
      * Para eso use las otras funciones que sacan el valor correcto.
      *
@@ -288,20 +282,6 @@ public class PoiHelper {
         return 0;
     }
 
-    /*
-     public static String getStringInLongValue(Cell cell) {
-     if (cell == null) {
-     return null;
-     }
-     int type = cell.getCellType();
-     if ((type == Cell.CELL_TYPE_NUMERIC)) {
-     double v = cell.getNumericCellValue();
-     long l = (long) Math.floor(v);
-     return ""+l;
-     }
-     return cell.toString();
-
-     }*/
     public static java.sql.Date getDateValue(Cell cell) {
         if (cell == null) {
             return null;
@@ -376,6 +356,7 @@ public class PoiHelper {
     private static boolean isNumber(String obj) {
         try {
             Double.parseDouble(obj);
+            
             return true;
         } catch (NumberFormatException e) {
             return false;

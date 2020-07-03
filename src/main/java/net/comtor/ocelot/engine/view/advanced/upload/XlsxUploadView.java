@@ -76,6 +76,11 @@ public abstract class XlsxUploadView<E> extends SimpleView {
     }
 
     @Override
+    protected String getIconClass() {
+        return FontAwesome.Solid.FILE_EXCEL;
+    }
+
+    @Override
     protected void getViewContent(HttpServletRequest request, HtmlContainer container) {
         BAlertInfo info = new BAlertInfo("");
         info.addRawText("<b>Las columnas cuyo encabezado tenga <span style='color: red;'>*</span> deben ser diligenciados obligatoriamente.</b>");

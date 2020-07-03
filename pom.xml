@@ -114,4 +114,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <name>ocelot-template-engine-2</name>
 </project>
