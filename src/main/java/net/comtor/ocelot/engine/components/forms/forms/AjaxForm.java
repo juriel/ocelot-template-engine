@@ -23,6 +23,11 @@ public class AjaxForm extends AbstractHtmlAdministrableFormElement {
         return this;
     }
 
+    public AjaxForm addMultipart() {
+        addAttribute("enctype", "multipart/form-data");;
+        return this;
+    }
+
     public AjaxForm addSubmitWithIntro() {
         addAttribute("validate-intro", "true");
 

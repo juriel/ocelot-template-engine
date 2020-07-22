@@ -427,7 +427,7 @@ public abstract class BusinessService<E, ID extends Serializable> {
         }
     }
 
-    protected void validateEntity(E entity, String messageNull, String messageEmpty)
+    public void validateEntity(E entity, String messageNull, String messageEmpty)
             throws OcelotException {
         if (entity == null) {
             throw new OcelotException(messageNull);
