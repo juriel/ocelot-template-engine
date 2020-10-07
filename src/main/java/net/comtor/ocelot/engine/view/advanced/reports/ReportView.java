@@ -63,6 +63,8 @@ public abstract class ReportView extends SimpleView {
 
     private String filterFormName = "form-" + System.currentTimeMillis();
 
+    private HtmlDiv chart;
+
     protected AjaxForm getFiltersForm() {
         AjaxForm form = new AjaxForm(filterFormName);
         form.addSubmitWithIntro();
@@ -186,6 +188,12 @@ public abstract class ReportView extends SimpleView {
             return new BAlertInfo("No se encontraron resultados.");
         }
 
+        chart = addChart();
+        
+        if (chart != null) {
+            container.add(chart);
+        }
+
         container.add(getTableResult(rs));
 
         return container;
@@ -211,6 +219,10 @@ public abstract class ReportView extends SimpleView {
         }
 
         return table;
+    }
+
+    protected HtmlDiv addChart() {
+        return null;
     }
 
     protected TableDataElement getValueFromResultSet(ResultSet resultSet, String index) throws SQLException {

@@ -356,7 +356,7 @@ public class PoiHelper {
     private static boolean isNumber(String obj) {
         try {
             Double.parseDouble(obj);
-            
+
             return true;
         } catch (NumberFormatException e) {
             return false;

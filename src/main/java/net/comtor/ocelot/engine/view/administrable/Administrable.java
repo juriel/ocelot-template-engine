@@ -582,8 +582,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         HtmlContainer mainContainer = new HtmlContainer();
         BCard card = new BCard(getIconClass(), getDetailTitle());
 
-        OcelotButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(),
-                getBackPathOnDetailView());
+        OcelotButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(), getBackPathOnDetailView());
         backButton.setIconClass(FontAwesome.Solid.ARROW_ALT_CIRCLE_LEFT);
         backButton.setStyle("float: right");
 
@@ -635,8 +634,7 @@ public abstract class Administrable<E, ID extends Serializable> {
             getBusinessService().active(toActive);
             BAlertSuccess success = new BAlertSuccess(getActiveSuccesfulTitle());
             options.add(new MapResponse(OCELOT_DEFAULT_ALERT, success.getHtml()));
-            options.add(new MapResponse(OCELOT_TABLE_RESULT, getTableResult(request,
-                    getQueryResult(), 0).getHtml()));
+            options.add(new MapResponse(OCELOT_TABLE_RESULT, getTableResult(request, getQueryResult(), 0).getHtml()));
         } catch (OcelotException ex) {
             BAlertDanger error = new BAlertDanger(ex.getMessage());
             options.add(new MapResponse(OCELOT_DEFAULT_ALERT, error.getHtml()));
@@ -808,8 +806,7 @@ public abstract class Administrable<E, ID extends Serializable> {
 
     }
 
-    protected void addDefaultOptions(HttpServletRequest request, E entity,
-            LinkedList<HtmlObject> optionsList, boolean showEditButton, boolean showDeleteButton,
+    protected void addDefaultOptions(HttpServletRequest request, E entity, LinkedList<HtmlObject> optionsList, boolean showEditButton, boolean showDeleteButton,
             boolean showActiveButton) {
         if (OcelotSecurityManager.isAuthorized(getViewPrivilege()) && getDetailView(request, entity) != null) {
             GetButton toDetail = new GetButton(BColor.INFO, "", getToDetailPath(entity));
@@ -972,8 +969,7 @@ public abstract class Administrable<E, ID extends Serializable> {
     }
 
     protected AjaxButton getBackButton(HttpServletRequest request) {
-        AjaxButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(),
-                getOriginController());
+        AjaxButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(), getOriginController());
         backButton.setIconClass(FontAwesome.Solid.ARROW_ALT_CIRCLE_LEFT);
         backButton.setStyle("float: right");
 
@@ -1132,8 +1128,9 @@ public abstract class Administrable<E, ID extends Serializable> {
 
     /**
      * Init form with entity values
+     *
      * @param form
-     * @param entity 
+     * @param entity
      */
     protected void fillFormOnEdit(AjaxForm form, E entity) {
         HtmlFormHelper.fillForm(form, entity);

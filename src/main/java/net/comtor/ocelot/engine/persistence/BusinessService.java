@@ -82,11 +82,11 @@ public abstract class BusinessService<E, ID extends Serializable> {
                 }
             }
         }
+
         return null;
     }
 
-    protected ID runGetter(Field field, E entity) throws IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException {
+    protected ID runGetter(Field field, E entity) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         String fieldName = field.getName();
         Method[] methods = entity.getClass().getMethods();
 
@@ -158,9 +158,11 @@ public abstract class BusinessService<E, ID extends Serializable> {
      */
     public E save(E newE) throws OcelotException {
         LinkedHashMap<String, List<String>> errors = validateEntity(newE);
+       
         if (!errors.isEmpty()) {
             throw new OcelotException(errors);
         }
+        
         return getDao().save(newE);
     }
 

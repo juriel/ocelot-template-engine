@@ -41,9 +41,11 @@ public abstract class AdvancedAdministrable<E, ID extends Serializable> extends 
     public String getControllerName() {
         RequestMapping requestMapping = getClass().getAnnotation(RequestMapping.class);
         String controllerName = requestMapping.value()[0];
+
         if (controllerName.startsWith("/")) {
             controllerName = controllerName.substring(1);
         }
+
         return controllerName;
     }
 
@@ -86,18 +88,14 @@ public abstract class AdvancedAdministrable<E, ID extends Serializable> extends 
         try {
             fillObjectFromValuesMap(values, entity);
         } catch (InvocationTargetException ex) {
-            LOG.log(Level.SEVERE,
-                    "Es posible que la entidad que está intentando mapear"
-                    + " no coincida con los parametros que vienen en el request,"
-                    + " sobre escriba el metodo getEntity y haga el mapeo del "
-                    + "request de forma acorde a la necesidad que tenga", ex);
+            LOG.log(Level.SEVERE, "Es posible que la entidad que está intentando mapear no coincida con los parametros que vienen en el request, sobre escriba el "
+                    + "metodo getEntity y haga el mapeo del request de forma acorde a la necesidad que tenga", ex);
         }
 
         return entity;
     }
 
-    public void fillObjectFromValuesMap(Map<String, String[]> values, E entity)
-            throws InvocationTargetException {
+    public void fillObjectFromValuesMap(Map<String, String[]> values, E entity) throws InvocationTargetException {
         Class clazz = entity.getClass();
 
         for (Map.Entry<String, String[]> entry : values.entrySet()) {
@@ -110,17 +108,13 @@ public abstract class AdvancedAdministrable<E, ID extends Serializable> extends 
                     try {
                         if (method.getParameterTypes()[0].equals("java.lang.String")) {
                             method.invoke(this, val);
-                        } else if (method.getParameterTypes()[0].equals("int")
-                                || method.getParameterTypes()[0].equals("java.lang.Integer")) {
+                        } else if (method.getParameterTypes()[0].equals("int") || method.getParameterTypes()[0].equals("java.lang.Integer")) {
                             method.invoke(this, Integer.parseInt(val));
-                        } else if (method.getParameterTypes()[0].equals("double")
-                                || method.getParameterTypes()[0].equals("java.lang.Double")) {
+                        } else if (method.getParameterTypes()[0].equals("double") || method.getParameterTypes()[0].equals("java.lang.Double")) {
                             method.invoke(this, Double.parseDouble(val));
-                        } else if (method.getParameterTypes()[0].equals("float")
-                                || method.getParameterTypes()[0].equals("java.lang.Float")) {
+                        } else if (method.getParameterTypes()[0].equals("float") || method.getParameterTypes()[0].equals("java.lang.Float")) {
                             method.invoke(this, Float.parseFloat(val));
-                        } else if (method.getParameterTypes()[0].equals("long")
-                                || method.getParameterTypes()[0].equals("java.lang.Long")) {
+                        } else if (method.getParameterTypes()[0].equals("long") || method.getParameterTypes()[0].equals("java.lang.Long")) {
                             method.invoke(this, Long.parseLong(val));
                         } else if (method.getParameterTypes()[0].equals("java.sql.Date")) {
                             SimpleDateFormat sdf = new SimpleDateFormat(getDeafultDateFormat());
@@ -145,14 +139,14 @@ public abstract class AdvancedAdministrable<E, ID extends Serializable> extends 
     protected List<MapResponse> getDefaultResponse() {
         List<MapResponse> options = new LinkedList<>();
         options.add(new MapResponse("title", StringUtils.capitalize(getEntityPhoneticName()), MapResponse.TAG));
+
         return options;
     }
 
     protected String getEntityName() {
         Class entClazz = getEmptyObject().getClass();
-        String nombre = entClazz.getSimpleName().toUpperCase();
 
-        return nombre;
+        return entClazz.getSimpleName().toUpperCase();
     }
 
     @Override
