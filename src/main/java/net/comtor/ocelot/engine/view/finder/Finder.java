@@ -255,8 +255,7 @@ public abstract class Finder<E> {
             contenForm.add(filter);
         });
 
-        PostButton searchButton = new PostButton(BColor.PRIMARY, "Buscar", FINDER_FORM,
-                getFinderName() + "/search/0" + getUrlParams(request), false);
+        PostButton searchButton = new PostButton(BColor.PRIMARY, "Buscar", FINDER_FORM, getFinderName() + "/search/0" + getUrlParams(request), false);
         searchButton.setIconClass(FontAwesome.Solid.SEARCH);
 
         contenForm.add(searchButton);

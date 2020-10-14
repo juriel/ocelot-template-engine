@@ -13,6 +13,7 @@ import net.comtor.ocelot.html.styles.HtmlSpan;
  */
 public class FinderLauncher extends BShowField {
 
+    private String id;
     private String myEndpoint;
     private BModalLauncherButton modalLauncherButton;
     private BButton clearFinderButton;
@@ -20,6 +21,7 @@ public class FinderLauncher extends BShowField {
     public FinderLauncher(String label, String showValue, String name, String hiddenValue, String endpoint) {
         super(label, showValue, name, hiddenValue);
 
+        id = name;
         myEndpoint = endpoint + "/" + name;
         modalLauncherButton = getModalLauncher(myEndpoint);
         clearFinderButton = getClearFinderButton(name);
@@ -51,8 +53,10 @@ public class FinderLauncher extends BShowField {
 
     private BModalLauncherButton getModalLauncher(String endpoint) {
         BModalLauncherButton button = new BModalLauncherButton("ocelotModal", FontAwesome.Solid.SEARCH);
+        button.setId(id + "_modal_launcher_btn");
         button.addClass("btn")
                 .addClass("btn-primary")
+                .addClass("modal_launcher_btn")
                 .addClass("ml-3");
         button.setBColor(BColor.PRIMARY)
                 .addClass("finderLauncher")
@@ -63,8 +67,10 @@ public class FinderLauncher extends BShowField {
 
     private BButton getClearFinderButton(String fieldId) {
         BButton clearButton = new BButton(BColor.DANGER, "");
+        clearButton.setId(id + "_clear_finder_btn");
         clearButton.addClass("btn")
                 .addClass("btn-primary")
+                .addClass("clear_finder_btn")
                 .addClass("ml-3");
         clearButton.setIcon(FontAwesome.Solid.BROOM);
         clearButton.addAttribute("title", "Limpiar valor");
