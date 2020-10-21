@@ -4,6 +4,7 @@ import net.comtor.ocelot.bootstrap.commons.BColor;
 import net.comtor.ocelot.bootstrap.components.buttons.BModalLauncherButton;
 import net.comtor.ocelot.bootstrap.forms.BShowField;
 import net.comtor.ocelot.bootstrap.forms.buttons.BButton;
+import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.engine.util.icons.FontAwesome;
 import net.comtor.ocelot.html.styles.HtmlSpan;
 
@@ -66,7 +67,7 @@ public class FinderLauncher extends BShowField {
     }
 
     private BButton getClearFinderButton(String fieldId) {
-        BButton clearButton = new BButton(BColor.DANGER, "");
+        BButton clearButton = new BButton(BButtonStyle.DANGER, "");
         clearButton.setId(id + "_clear_finder_btn");
         clearButton.addClass("btn")
                 .addClass("btn-primary")

@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import net.comtor.ocelot.bootstrap.commons.BColor;
+import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.engine.commons.MapResponse;
 import net.comtor.ocelot.engine.components.forms.buttons.AjaxButton;
 import net.comtor.ocelot.engine.components.forms.buttons.GetButton;
@@ -53,8 +53,7 @@ public abstract class WebView {
     }
 
     protected AjaxButton getBackButton(HttpServletRequest request) {
-        AjaxButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(),
-                getEndpointFormat(getOriginController()));
+        AjaxButton backButton = new GetButton(BButtonStyle.WARNING, getBackButtonTitle(), getEndpointFormat(getOriginController()));
         backButton.setIconClass(FontAwesome.Solid.ARROW_ALT_CIRCLE_LEFT);
         backButton.setStyle("float: right");
 
@@ -68,8 +67,7 @@ public abstract class WebView {
     protected abstract void addJsResources(List<String> paths);
 
     @InitBinder
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-            throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateFormat.setLenient(true);
     }

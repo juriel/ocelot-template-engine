@@ -1,6 +1,7 @@
 package net.comtor.ocelot.engine.components.forms.buttons;
 
 import net.comtor.ocelot.bootstrap.forms.buttons.BButton;
+import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.html.formatting.HtmlIcon;
 import net.comtor.ocelot.html.styles.HtmlSpan;
 
@@ -12,7 +13,7 @@ public class AjaxButton extends BButton implements OcelotButton {
 
     private String localValue;
 
-    public AjaxButton(String buttonStyle, String value, String endpoint, boolean isLadda) {
+    public AjaxButton(BButtonStyle buttonStyle, String value, String endpoint, boolean isLadda) {
         super();
 
         setButtonStyle(buttonStyle);
@@ -25,7 +26,7 @@ public class AjaxButton extends BButton implements OcelotButton {
         }
     }
 
-    public AjaxButton(String buttonStyle, String value, String endpoint) {
+    public AjaxButton(BButtonStyle buttonStyle, String value, String endpoint) {
         super();
 
         setButtonStyle(buttonStyle);

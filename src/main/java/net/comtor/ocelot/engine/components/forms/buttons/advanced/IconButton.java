@@ -1,6 +1,7 @@
 package net.comtor.ocelot.engine.components.forms.buttons.advanced;
 
 import net.comtor.ocelot.bootstrap.forms.buttons.BButton;
+import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.html.formatting.HtmlIcon;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,7 +13,7 @@ public class IconButton extends BButton {
 
     private final String localLabel;
 
-    public IconButton(String label, String style, String iconType) {
+    public IconButton(String label, BButtonStyle style, String iconType) {
         super(style, label);
 
         this.localLabel = label;

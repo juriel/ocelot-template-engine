@@ -23,6 +23,7 @@ import javax.sql.DataSource;
 import net.comtor.ocelot.bootstrap.commons.BColor;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertInfo;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertSuccess;
+import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.bootstrap.forms.inputs.BInputText;
 import net.comtor.ocelot.engine.commons.MapResponse;
 import net.comtor.ocelot.engine.commons.tables.AdvancedTable;
@@ -77,7 +78,7 @@ public abstract class ReportView extends SimpleView {
     }
 
     protected PostButton getSendFiltersButton(String formName) {
-        return new PostButton(BColor.PRIMARY, "Consultar", formName, getControllerName() + "/filter", false);
+        return new PostButton(BButtonStyle.PRIMARY, "Consultar", formName, getControllerName() + "/filter", false);
     }
 
     protected void addFilters(AjaxForm form) {

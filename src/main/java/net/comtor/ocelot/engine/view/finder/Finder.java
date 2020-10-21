@@ -13,9 +13,9 @@ import net.comtor.ocelot.engine.components.forms.buttons.GetButton;
 import net.comtor.ocelot.engine.components.forms.buttons.PostButton;
 import net.comtor.ocelot.engine.components.forms.forms.AjaxForm;
 import net.comtor.ocelot.engine.persistence.BusinessService;
-import net.comtor.ocelot.bootstrap.commons.BColor;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertWarning;
 import net.comtor.ocelot.bootstrap.forms.buttons.BButton;
+import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.bootstrap.forms.inputs.BInputText;
 import net.comtor.ocelot.engine.util.icons.FontAwesome;
 import net.comtor.ocelot.html.HtmlContainer;
@@ -143,7 +143,7 @@ public abstract class Finder<E> {
     }
 
     protected void getRowOptions(LinkedList<HtmlObject> optionsList, E entity) {
-        BButton button = new BButton(BColor.PRIMARY, "");
+        BButton button = new BButton(BButtonStyle.PRIMARY, "");
         button.addEscapedText("Agregar");
         button.setIcon(FontAwesome.Solid.CHECK);
         button.addAttribute("title", "Seleccionar");
@@ -174,7 +174,7 @@ public abstract class Finder<E> {
             divConten.add(new HtmlBr());
 
             if (getEntityController() != null) {
-                GetButton goToNew = new GetButton(BColor.PRIMARY, "Crear", getEntityController() + "/new");
+                GetButton goToNew = new GetButton(BButtonStyle.PRIMARY, "Crear", getEntityController() + "/new");
                 goToNew.addAttribute("data-dismiss", "modal");
                 divConten.add(goToNew);
             }
@@ -201,8 +201,7 @@ public abstract class Finder<E> {
         String urlEndpoint = getFinderName() + "/search";
 
         if (page.getTotalPages() > 0) {
-            PaginatorBar paginator = new PaginatorBar(getNumIndexOnPaginator(),
-                    FINDER_FORM, urlEndpoint, page.getTotalPages(), page.getTotalElements(),
+            PaginatorBar paginator = new PaginatorBar(getNumIndexOnPaginator(), FINDER_FORM, urlEndpoint, page.getTotalPages(), page.getTotalElements(),
                     actualPage, page.getContent().size(), getNumRowsToView());
             paginator.setUrlParams(getUrlParams(request));
             queryResult.add(paginator);
@@ -221,8 +220,7 @@ public abstract class Finder<E> {
 
     @ResponseBody
     @RequestMapping("/{default_id}/{parent_id}")
-    public List<MapResponse> mainViewWithParentId(@PathVariable("default_id") String defaultId,
-            @PathVariable("parent_id") Object parentId, HttpServletRequest request) {
+    public List<MapResponse> mainViewWithParentId(@PathVariable("default_id") String defaultId, @PathVariable("parent_id") Object parentId, HttpServletRequest request) {
         this.idParent = parentId;
 
         return getMainView(defaultId, request);
@@ -255,7 +253,7 @@ public abstract class Finder<E> {
             contenForm.add(filter);
         });
 
-        PostButton searchButton = new PostButton(BColor.PRIMARY, "Buscar", FINDER_FORM, getFinderName() + "/search/0" + getUrlParams(request), false);
+        PostButton searchButton = new PostButton(BButtonStyle.PRIMARY, "Buscar", FINDER_FORM, getFinderName() + "/search/0" + getUrlParams(request), false);
         searchButton.setIconClass(FontAwesome.Solid.SEARCH);
 
         contenForm.add(searchButton);

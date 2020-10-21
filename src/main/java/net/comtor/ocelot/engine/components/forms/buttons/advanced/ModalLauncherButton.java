@@ -1,5 +1,6 @@
 package net.comtor.ocelot.engine.components.forms.buttons.advanced;
 
+import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.engine.components.forms.buttons.AjaxButton;
 
 /**
@@ -8,7 +9,7 @@ import net.comtor.ocelot.engine.components.forms.buttons.AjaxButton;
  */
 public class ModalLauncherButton extends AjaxButton {
 
-    public ModalLauncherButton(String buttonStyle, String modalId, String iconClass, String value, String endpoint) {
+    public ModalLauncherButton(BButtonStyle buttonStyle, String modalId, String iconClass, String value, String endpoint) {
         super(buttonStyle, value, endpoint, false);
 
         setIconClass(iconClass);

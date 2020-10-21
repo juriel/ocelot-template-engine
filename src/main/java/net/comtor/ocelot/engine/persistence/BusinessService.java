@@ -145,9 +145,7 @@ public abstract class BusinessService<E, ID extends Serializable> {
     }
 
     public E getOne(ID primaryKey) {
-        E obj = getDao().getOne(primaryKey);
-
-        return obj;
+        return getDao().getOne(primaryKey);
     }
 
     /**
@@ -158,11 +156,11 @@ public abstract class BusinessService<E, ID extends Serializable> {
      */
     public E save(E newE) throws OcelotException {
         LinkedHashMap<String, List<String>> errors = validateEntity(newE);
-       
+
         if (!errors.isEmpty()) {
             throw new OcelotException(errors);
         }
-        
+
         return getDao().save(newE);
     }
 
@@ -170,18 +168,20 @@ public abstract class BusinessService<E, ID extends Serializable> {
         LinkedHashMap<String, List<String>> errorsMap = new LinkedHashMap<>();
         Class clazz = e.getClass();
         Field[] fields = clazz.getDeclaredFields();
+        
         for (Field field : fields) {
-
             if (!field.getType().getName().equals("java.lang.String")) {
                 continue;
             }
 
             List<String> errors = new LinkedList<>();
+            
             Arrays.asList(field.getAnnotations()).forEach(annotation -> {
                 if (annotation instanceof javax.validation.constraints.Size) {
                     try {
                         Size sizeAnnotation = (javax.validation.constraints.Size) annotation;
                         String value = (String) clazz.getMethod("get" + StringUtils.capitalize(field.getName())).invoke(e);
+                       
                         if (value != null) {
                             if (value.length() < sizeAnnotation.min()) {
                                 errors.add("El campo debe contener al menos " + sizeAnnotation.min() + " caracter.");
@@ -195,14 +195,13 @@ public abstract class BusinessService<E, ID extends Serializable> {
                         LOG.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }
-
             });
 
             if (!errors.isEmpty()) {
                 errorsMap.put(field.getName(), errors);
             }
-
         }
+        
         return errorsMap;
     }
 
@@ -223,9 +222,9 @@ public abstract class BusinessService<E, ID extends Serializable> {
     public void edit(E toEditE) throws OcelotException {
         try {
             getDao().save(fillSavedObject(toEditE));
-        } catch (ConstraintViolationException e) {
+        } catch (ConstraintViolationException ex) {
             HtmlUl ul = new HtmlUl();
-            Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+            Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
 
             for (ConstraintViolation<?> violation : violations) {
                 ul.addLi(violation.getMessage());
@@ -370,6 +369,7 @@ public abstract class BusinessService<E, ID extends Serializable> {
 
     public E fillSavedObject(E toEdit) throws OcelotException {
         E saved = findOne(getId(toEdit));
+
         if (saved == null) {
             throw new OcelotException("Can't find object to Edit ");
         }

@@ -7,10 +7,10 @@ import java.util.List;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.comtor.ocelot.bootstrap.commons.BColor;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertDanger;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertInfo;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertSuccess;
+import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.bootstrap.forms.inputs.BInputFile;
 import net.comtor.ocelot.engine.commons.MapResponse;
 import net.comtor.ocelot.engine.components.forms.buttons.PostButton;
@@ -108,7 +108,7 @@ public abstract class XlsxUploadView<E> extends SimpleView {
         file.getMainContainer()
                 .addClass("col-sm-10");
 
-        PostButton postButton = new PostButton(BColor.PRIMARY, "Cargar", getFormName(), getControllerName() + "/processUpload", true);
+        PostButton postButton = new PostButton(BButtonStyle.PRIMARY, "Cargar", getFormName(), getControllerName() + "/processUpload", true);
         postButton.setIconClass(FontAwesome.Solid.FILE_UPLOAD);
         postButton.addClass("col-sm-12");
 

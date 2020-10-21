@@ -1,6 +1,6 @@
 package net.comtor.ocelot.engine.components.forms.buttons.advanced;
 
-import net.comtor.ocelot.bootstrap.commons.BColor;
+import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.engine.components.forms.buttons.AjaxButton;
 import static net.comtor.ocelot.engine.util.icons.FontAwesome.Solid.TRASH_ALT;
 
@@ -10,7 +10,7 @@ import static net.comtor.ocelot.engine.util.icons.FontAwesome.Solid.TRASH_ALT;
  */
 public class DeleteButton extends AjaxButton {
 
-    public DeleteButton(String buttonStyle, String value, String endpoint) {
+    public DeleteButton(BButtonStyle buttonStyle, String value, String endpoint) {
         super(buttonStyle, value, endpoint);
 
         addClass("ajaxDelete");
@@ -18,7 +18,7 @@ public class DeleteButton extends AjaxButton {
     }
 
     public DeleteButton(String endpoint, String warMessage) {
-        this(BColor.DANGER, null, endpoint);
+        this(BButtonStyle.DANGER, null, endpoint);
 
         if (warMessage != null) {
             addAttribute("war-message", warMessage);

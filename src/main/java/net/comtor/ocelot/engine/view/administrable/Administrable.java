@@ -22,12 +22,12 @@ import net.comtor.ocelot.engine.commons.tables.AdvancedTable;
 import net.comtor.ocelot.engine.exceptions.OcelotException;
 import net.comtor.ocelot.engine.persistence.BusinessService;
 import net.comtor.ocelot.engine.security.OcelotSecurityManager;
-import net.comtor.ocelot.bootstrap.commons.BColor;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertDanger;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertInfo;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertSuccess;
 import net.comtor.ocelot.bootstrap.components.cards.BCard;
 import net.comtor.ocelot.bootstrap.forms.BShowField;
+import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.bootstrap.forms.inputs.BInputText;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
@@ -188,11 +188,14 @@ public abstract class Administrable<E, ID extends Serializable> {
         getFilters(filters);
         SearchForm form = new SearchForm(QUERY_FORM);
         form.addClass("ajaxForm");
+
         for (HtmlObject filter : filters) {
             form.add(filter);
         }
+
         SearchButton searchButton = new SearchButton(getSearchTitle(), QUERY_FORM, getControllerName() + "/search/0", false);
         form.add(searchButton);
+
         return form;
     }
 
@@ -218,8 +221,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         HtmlContainer container = new HtmlContainer();
         BCard card = new BCard(getIconClass(), getNewTitle());
 
-        OcelotButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(),
-                getBackPathOnNewForm());
+        OcelotButton backButton = new GetButton(BButtonStyle.WARNING, getBackButtonTitle(), getBackPathOnNewForm());
         backButton.setIconClass(FontAwesome.Solid.ARROW_ALT_CIRCLE_LEFT);
         backButton.setStyle("float: right");
 
@@ -268,13 +270,11 @@ public abstract class Administrable<E, ID extends Serializable> {
     }
 
     protected HtmlObject getSaveButton(String formName, String urlEndpoint) {
-        PostButton saveButton = new PostButton(BColor.PRIMARY, getSaveButtonTitle(),
-                formName, urlEndpoint, resetNewForm());
+        PostButton saveButton = new PostButton(BButtonStyle.PRIMARY, getSaveButtonTitle(), formName, urlEndpoint, resetNewForm());
         saveButton.setIconClass(FontAwesome.Solid.DATABASE);
 
         if (addToOnclickSaveButton() != null) {
-            saveButton.addAttribute("onclick", saveButton.getAttribute("onclick")
-                    + addToOnclickSaveButton());
+            saveButton.addAttribute("onclick", saveButton.getAttribute("onclick") + addToOnclickSaveButton());
         }
 
         return saveButton;
@@ -307,18 +307,18 @@ public abstract class Administrable<E, ID extends Serializable> {
             BAlertDanger error = new BAlertDanger(ex.getMessage() == null ? "Hay errores en algunos campos." : ex.getMessage());
             options.add(new MapResponse(OCELOT_DEFAULT_ALERT, error.getHtml()));
             options.add(new MapResponse("ocelot-error-no-reset", ""));
+
             if (!ex.getErrors().isEmpty()) {
                 ex.getErrors().entrySet().forEach((e) -> {
                     String key = e.getKey();
                     HtmlUl errors = new HtmlUl();
                     e.getValue().forEach(x -> errors.addLi(x));
+
                     if (!errors.getContentObjects().isEmpty()) {
                         options.add(new MapResponse(key + "_errors", errors.getHtml()));
                     }
                 });
-
             }
-
         }
 
         return options;
@@ -326,8 +326,7 @@ public abstract class Administrable<E, ID extends Serializable> {
 
     @ResponseBody
     @RequestMapping(value = "/newMultipart", method = RequestMethod.POST)
-    public List<MapResponse> createProcessMultipart(MultipartHttpServletRequest multipartRequest,
-            HttpServletRequest request) {
+    public List<MapResponse> createProcessMultipart(MultipartHttpServletRequest multipartRequest, HttpServletRequest request) {
         processRequest(request);
 
         Map<String, String[]> valuesMap = multipartRequest.getParameterMap();
@@ -355,8 +354,7 @@ public abstract class Administrable<E, ID extends Serializable> {
 
     @ResponseBody
     @RequestMapping(value = "/editMultipart", method = RequestMethod.POST)
-    public List<MapResponse> editProcessMultipart(MultipartHttpServletRequest multipartRequest,
-            HttpServletRequest request) {
+    public List<MapResponse> editProcessMultipart(MultipartHttpServletRequest multipartRequest, HttpServletRequest request) {
         processRequest(request);
         Map<String, String[]> valuesMap = multipartRequest.getParameterMap();
         List<MapResponse> options = getDefaultResponse();
@@ -386,16 +384,13 @@ public abstract class Administrable<E, ID extends Serializable> {
         createWithDetails(valuesMap, entity, details);
     }
 
-    protected void createMultipart(MultipartHttpServletRequest multipartRequest,
-            Map<String, String[]> valuesMap) throws OcelotException {
+    protected void createMultipart(MultipartHttpServletRequest multipartRequest, Map<String, String[]> valuesMap) throws OcelotException {
     }
 
-    protected void editMultipart(MultipartHttpServletRequest multipartRequest,
-            Map<String, String[]> valuesMap) throws OcelotException {
+    protected void editMultipart(MultipartHttpServletRequest multipartRequest, Map<String, String[]> valuesMap) throws OcelotException {
     }
 
-    protected void createWithDetails(Map<String, String[]> valuesMap, E entity, Object[] details)
-            throws OcelotException {
+    protected void createWithDetails(Map<String, String[]> valuesMap, E entity, Object[] details) throws OcelotException {
         if (details == null) {
             getBusinessService().create(getEntity(valuesMap, entity));
         } else {
@@ -422,8 +417,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         HtmlContainer container = new HtmlContainer();
         BCard card = new BCard(getIconClass(), getEditTitle());
 
-        OcelotButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(),
-                getBackPathOnNewForm());
+        OcelotButton backButton = new GetButton(BButtonStyle.WARNING, getBackButtonTitle(), getBackPathOnNewForm());
         backButton.setIconClass(FontAwesome.Solid.ARROW_ALT_CIRCLE_LEFT);
         backButton.setStyle("float: right");
         card.addToHeader(backButton);
@@ -464,8 +458,7 @@ public abstract class Administrable<E, ID extends Serializable> {
     }
 
     protected HtmlObject getEditButton(String formName, String urlEndpoint) {
-        PostButton editButton = new PostButton(BColor.PRIMARY, getSaveButtonTitle(),
-                formName, urlEndpoint, false);
+        PostButton editButton = new PostButton(BButtonStyle.PRIMARY, getSaveButtonTitle(), formName, urlEndpoint, false);
         editButton.setIconClass(FontAwesome.Solid.EDIT);
 
         return editButton;
@@ -509,8 +502,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         editWithDetails(valuesMap, entity, details);
     }
 
-    protected void editWithDetails(Map<String, String[]> valuesMap, E entity, Object[] details)
-            throws OcelotException {
+    protected void editWithDetails(Map<String, String[]> valuesMap, E entity, Object[] details) throws OcelotException {
         if (details == null) {
             getBusinessService().edit(getEntity(valuesMap, entity));
         } else {
@@ -556,8 +548,7 @@ public abstract class Administrable<E, ID extends Serializable> {
             getBusinessService().delete(toDelete);
             BAlertSuccess success = new BAlertSuccess(getDeleteSuccesfulTitle());
             options.add(new MapResponse(OCELOT_DEFAULT_ALERT, success.getHtml()));
-            options.add(new MapResponse(OCELOT_TABLE_RESULT, getTableResult(request,
-                    getQueryResult(), 0).getHtml()));
+            options.add(new MapResponse(OCELOT_TABLE_RESULT, getTableResult(request, getQueryResult(), 0).getHtml()));
         } catch (OcelotException ex) {
             BAlertDanger error = new BAlertDanger(ex.getMessage());
             options.add(new MapResponse(OCELOT_DEFAULT_ALERT, error.getHtml()));
@@ -582,7 +573,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         HtmlContainer mainContainer = new HtmlContainer();
         BCard card = new BCard(getIconClass(), getDetailTitle());
 
-        OcelotButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(), getBackPathOnDetailView());
+        OcelotButton backButton = new GetButton(BButtonStyle.WARNING, getBackButtonTitle(), getBackPathOnDetailView());
         backButton.setIconClass(FontAwesome.Solid.ARROW_ALT_CIRCLE_LEFT);
         backButton.setStyle("float: right");
 
@@ -668,7 +659,7 @@ public abstract class Administrable<E, ID extends Serializable> {
     }
 
     protected GetButton getNewButton() {
-        GetButton toNewButton = new GetButton(BColor.INFO, getNewButtonTitle(), getToNewPath());
+        GetButton toNewButton = new GetButton(BButtonStyle.INFO, getNewButtonTitle(), getToNewPath());
         toNewButton.setIconClass(FontAwesome.Solid.PLUS_CIRCLE);
 
         return toNewButton;
@@ -809,7 +800,7 @@ public abstract class Administrable<E, ID extends Serializable> {
     protected void addDefaultOptions(HttpServletRequest request, E entity, LinkedList<HtmlObject> optionsList, boolean showEditButton, boolean showDeleteButton,
             boolean showActiveButton) {
         if (OcelotSecurityManager.isAuthorized(getViewPrivilege()) && getDetailView(request, entity) != null) {
-            GetButton toDetail = new GetButton(BColor.INFO, "", getToDetailPath(entity));
+            GetButton toDetail = new GetButton(BButtonStyle.INFO, "", getToDetailPath(entity));
             toDetail.setStyle("margin-right: 5px; margin-bottom: 5px;");
             toDetail.setIconClass(FontAwesome.Solid.EYE);
             toDetail.addAttribute("title", getDetailTitle());
@@ -818,7 +809,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         }
 
         if (OcelotSecurityManager.isAuthorized(getEditPrivilege()) && showEditButton && editable(entity)) {
-            AjaxButton edit = new GetButton(BColor.SUCCESS, null, getToEditPath(entity));
+            AjaxButton edit = new GetButton(BButtonStyle.SUCCESS, null, getToEditPath(entity));
             edit.setStyle("margin-right: 5px; margin-bottom: 5px;");
             edit.setIconClass(FontAwesome.Solid.EDIT);
             edit.addAttribute("title", getEditButtonTitle());
@@ -851,7 +842,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         }
 
         if (OcelotSecurityManager.isAuthorized(getActivePrivilege()) && showActiveButton && activable()) {
-            GetButton active = new GetButton(BColor.INFO, "", getControllerName() + "/active/" + getId(entity));
+            GetButton active = new GetButton(BButtonStyle.INFO, "", getControllerName() + "/active/" + getId(entity));
             active.setStyle("margin-right: 5px; margin-bottom: 5px;");
             active.setIconClass(FontAwesome.Solid.CHECK_SQUARE);
             active.addAttribute("title", getActiveButtonTitle());
@@ -969,7 +960,7 @@ public abstract class Administrable<E, ID extends Serializable> {
     }
 
     protected AjaxButton getBackButton(HttpServletRequest request) {
-        AjaxButton backButton = new GetButton(BColor.WARNING, getBackButtonTitle(), getOriginController());
+        AjaxButton backButton = new GetButton(BButtonStyle.WARNING, getBackButtonTitle(), getOriginController());
         backButton.setIconClass(FontAwesome.Solid.ARROW_ALT_CIRCLE_LEFT);
         backButton.setStyle("float: right");
 
