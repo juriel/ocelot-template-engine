@@ -151,7 +151,6 @@ public abstract class Administrable<E, ID extends Serializable> {
         }
 
         card.addToBody(new HtmlDiv().setId(OCELOT_DEFAULT_ALERT));
-        card.addToBody(new HtmlBr());
 
         if (getSubTitle() != null) {
             card.addToBody(new HtmlSmall(getSubTitle()));
@@ -160,7 +159,6 @@ public abstract class Administrable<E, ID extends Serializable> {
         SearchForm form = getFiltersForm();
 
         card.addToBody(form);
-        card.addToBody(new HtmlBr());
 
         HtmlDiv tableResult = new HtmlDiv(OCELOT_TABLE_RESULT);
         Page<E> queryResult = getQueryResult();
@@ -230,11 +228,9 @@ public abstract class Administrable<E, ID extends Serializable> {
         }
 
         card.addToBody(new HtmlDiv(OCELOT_DEFAULT_ALERT));
-        card.addToBody(new HtmlBr());
 
         if (getNewSubTitle() != null) {
             card.addToBody(new HtmlSmall(getNewSubTitle()));
-            card.addToBody(new HtmlBr());
         }
 
         AjaxForm form = new AjaxForm(formName);
@@ -422,7 +418,6 @@ public abstract class Administrable<E, ID extends Serializable> {
         backButton.setStyle("float: right");
         card.addToHeader(backButton);
         card.addToBody(new HtmlDiv(OCELOT_DEFAULT_ALERT));
-        card.addToBody(new HtmlBr());
 
         AjaxForm form = new AjaxForm(formName);
         E entity = (E) getBusinessService().getOne(id);
@@ -582,11 +577,9 @@ public abstract class Administrable<E, ID extends Serializable> {
         }
 
         card.addToBody(new HtmlDiv(OCELOT_DEFAULT_ALERT));
-        card.addToBody(new HtmlBr());
 
         if (getDetailSubTitle() != null) {
             card.addToBody(new HtmlSmall(getDetailSubTitle()));
-            card.addToBody(new HtmlBr());
         }
 
         E entity = (E) getBusinessService().getOne(id);
@@ -709,7 +702,6 @@ public abstract class Administrable<E, ID extends Serializable> {
 
         if (hasResultTitle()) {
             container.add(new HtmlH4(getResultsTitle()));
-            container.add(new HtmlBr());
         }
 
         HtmlDiv queryResult = new HtmlDiv("queryResult");
@@ -1095,8 +1087,6 @@ public abstract class Administrable<E, ID extends Serializable> {
         details.entrySet().forEach((entry) -> {
             container.add(new BShowField(entry.getKey(), entry.getValue()));
         });
-
-        container.add(new HtmlBr());
 
         return container;
     }

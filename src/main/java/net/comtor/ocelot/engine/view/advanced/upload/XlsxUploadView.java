@@ -125,14 +125,12 @@ public abstract class XlsxUploadView<E> extends SimpleView {
                 .addClass("form-control")
                 .setStyle("color: white; background-color: #17A2B8;"));
 
-        row.add(file)
-                .add(formGroup);
+        row.add(file).add(formGroup);
 
         form.add(row);
 
         container.add(form)
                 .add(new HtmlHr())
-                .add(new HtmlBr())
                 .add(new HtmlDiv(DIV_RESULTS)
                         .setStyle("max-height: 600px; overflow: auto;")
                         .addClass("px-3")

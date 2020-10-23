@@ -118,7 +118,6 @@ public abstract class SimpleView extends WebView {
             HtmlSmall small = new HtmlSmall();
             small.add(getSubTitle());
             card.addToBody(small);
-            card.addToBody(new HtmlBr());
         }
 
         HtmlContainer viewContainer = new HtmlContainer();

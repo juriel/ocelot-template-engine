@@ -20,7 +20,6 @@ import net.comtor.ocelot.bootstrap.forms.inputs.BInputText;
 import net.comtor.ocelot.engine.util.icons.FontAwesome;
 import net.comtor.ocelot.html.HtmlContainer;
 import net.comtor.ocelot.html.HtmlObject;
-import net.comtor.ocelot.html.basic.HtmlBr;
 import net.comtor.ocelot.html.basic.HtmlH4;
 import net.comtor.ocelot.html.basic.HtmlP;
 import net.comtor.ocelot.html.forms.inputs.HtmlInputHidden;
@@ -161,7 +160,6 @@ public abstract class Finder<E> {
     private HtmlContainer getTableResult(HttpServletRequest request, Page<E> page, int actualPage) {
         HtmlContainer container = new HtmlContainer();
         container.add(new HtmlH4("Resultados"));
-        container.add(new HtmlBr());
 
         HtmlDiv queryResult = new HtmlDiv(FINDER_QUERY_RESULT);
         queryResult.setStyle("overflow: auto");
@@ -171,7 +169,6 @@ public abstract class Finder<E> {
 
             HtmlP p = new HtmlP("No se encuentran resultados para la búsqueda");
             divConten.add(p);
-            divConten.add(new HtmlBr());
 
             if (getEntityController() != null) {
                 GetButton goToNew = new GetButton(BButtonStyle.PRIMARY, "Crear", getEntityController() + "/new");
@@ -179,7 +176,6 @@ public abstract class Finder<E> {
                 divConten.add(goToNew);
             }
 
-            divConten.add(new HtmlBr());
             BAlertWarning warning = new BAlertWarning(divConten.getHtml());
             warning.addAttribute("finder-alert", "true");
             container.add(warning);
@@ -235,11 +231,8 @@ public abstract class Finder<E> {
         this.defaultFinderId = defaultId;
         HtmlContainer container = new HtmlContainer();
 
-        container.add(new HtmlBr());
-
         if (getSubTitle() != null) {
             container.add(new HtmlP(getSubTitle()));
-            container.add(new HtmlBr());
         }
 
         LinkedList<HtmlObject> filters = new LinkedList<>();
@@ -259,8 +252,6 @@ public abstract class Finder<E> {
         contenForm.add(searchButton);
 
         container.add(contenForm);
-        container.add(new HtmlBr());
-        container.add(new HtmlBr());
 
         HtmlDiv tableResult = new HtmlDiv(FINDER_TABLE_RESULT);
         Page<E> queryResult = getQueryResult(request);

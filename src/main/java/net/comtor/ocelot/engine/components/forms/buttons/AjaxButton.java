@@ -22,7 +22,7 @@ public class AjaxButton extends BButton implements OcelotButton {
         this.localValue = value;
 
         if (isLadda) {
-            becomeLaddaButtom();
+            becomeLaddaButton();
         }
     }
 
@@ -34,7 +34,7 @@ public class AjaxButton extends BButton implements OcelotButton {
 
         this.localValue = value;
 
-        becomeLaddaButtom();
+        becomeLaddaButton();
     }
 
     @Override
@@ -45,13 +45,13 @@ public class AjaxButton extends BButton implements OcelotButton {
         setStyle("margin-right: 5px");
     }
 
-    private void becomeLaddaButtom() {
+    private void becomeLaddaButton() {
         addClass("ladda-button").addAttribute("data-style", "zoom-out");
 
-        HtmlSpan span = new HtmlSpan(this.localValue);
-        span.addClass("ladda-label");
+        HtmlSpan buttonLabel = new HtmlSpan(this.localValue);
+        buttonLabel.addClass("ladda-label");
 
-        add(span).add(new HtmlSpan().addClass("ladda-spinner"));
+        add(buttonLabel).add(new HtmlSpan().addClass("ladda-spinner"));
     }
 
     @Override
