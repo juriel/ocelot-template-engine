@@ -91,7 +91,6 @@ public abstract class ReportView extends SimpleView {
     protected void getViewContent(HttpServletRequest request, HtmlContainer container) {
         container.add(getFiltersForm());
         container.add(new HtmlHr());
-        container.add(new HtmlH4(getTableTitle()));
 
         HtmlDiv div = getDivResults();
         div.add(new BAlertInfo("Use los filtros para generar el reporte"));
