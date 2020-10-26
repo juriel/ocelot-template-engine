@@ -36,7 +36,6 @@ import net.comtor.ocelot.engine.view.simple.SimpleView;
 import net.comtor.ocelot.html.HtmlContainer;
 import net.comtor.ocelot.html.HtmlObject;
 import net.comtor.ocelot.html.HtmlTag;
-import net.comtor.ocelot.html.basic.HtmlH4;
 import net.comtor.ocelot.html.basic.HtmlHr;
 import net.comtor.ocelot.html.styles.HtmlDiv;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;

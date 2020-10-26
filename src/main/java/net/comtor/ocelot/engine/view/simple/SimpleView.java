@@ -48,7 +48,7 @@ public abstract class SimpleView extends WebView {
     protected LinkedList<AjaxButton> getButtons() {
         LinkedList<AjaxButton> buttons = new LinkedList<>();
         addButtons(buttons);
-        
+
         return buttons;
     }
 
@@ -112,13 +112,13 @@ public abstract class SimpleView extends WebView {
             card.addToHeader(getBackButton(request));
         }
 
-        card.addToBody(new HtmlDiv(OCELOT_DEFAULT_ALERT));
-
         if (getSubTitle() != null) {
             HtmlSmall small = new HtmlSmall();
             small.add(getSubTitle());
             card.addToBody(small);
         }
+        
+        card.addToBody(new HtmlDiv(OCELOT_DEFAULT_ALERT));
 
         HtmlContainer viewContainer = new HtmlContainer();
 

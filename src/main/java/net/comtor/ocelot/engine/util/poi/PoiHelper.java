@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FormulaError;
@@ -201,22 +202,28 @@ public class PoiHelper {
         int type = cell.getCellType();
 
         if (type == Cell.CELL_TYPE_BOOLEAN) {
-            boolean b = cell.getBooleanCellValue();
+            boolean booleanValue = cell.getBooleanCellValue();
 
-            return b ? 1 : 0;
-        } else if ((type == Cell.CELL_TYPE_STRING)) {
+            return booleanValue ? 1 : 0;
+        }
+
+        if (type == Cell.CELL_TYPE_STRING) {
             String str = cell.getStringCellValue();
 
-            try {
+            if (isNumber(str)) {
                 return Integer.parseInt(str);
-            } catch (Exception ex) {
-                return 0;
             }
-        } else if ((type == Cell.CELL_TYPE_NUMERIC)) {
+
+            return 0;
+        }
+
+        if (type == Cell.CELL_TYPE_NUMERIC) {
             double value = cell.getNumericCellValue();
 
             return (int) value;
-        } else if ((type == Cell.CELL_TYPE_BLANK)) {
+        }
+
+        if ((type == Cell.CELL_TYPE_BLANK)) {
             return 0;
         }
 
@@ -231,22 +238,28 @@ public class PoiHelper {
         int type = cell.getCellType();
 
         if (type == Cell.CELL_TYPE_BOOLEAN) {
-            boolean b = cell.getBooleanCellValue();
+            boolean booleanValue = cell.getBooleanCellValue();
 
-            return b ? 1 : 0;
-        } else if ((type == Cell.CELL_TYPE_STRING)) {
+            return booleanValue ? 1 : 0;
+        }
+
+        if (type == Cell.CELL_TYPE_STRING) {
             String str = cell.getStringCellValue();
 
-            try {
+            if (isNumber(str)) {
                 return Long.parseLong(str);
-            } catch (Exception ex) {
-                return 0;
             }
-        } else if ((type == Cell.CELL_TYPE_NUMERIC)) {
+
+            return 0;
+        }
+
+        if (type == Cell.CELL_TYPE_NUMERIC) {
             double value = cell.getNumericCellValue();
 
             return (long) value;
-        } else if ((type == Cell.CELL_TYPE_BLANK)) {
+        }
+
+        if (type == Cell.CELL_TYPE_BLANK) {
             return 0;
         }
 
@@ -261,21 +274,26 @@ public class PoiHelper {
         int type = cell.getCellType();
 
         if (type == Cell.CELL_TYPE_BOOLEAN) {
-            boolean b = cell.getBooleanCellValue();
+            boolean booleanValue = cell.getBooleanCellValue();
 
-            return b ? 1 : 0;
-        } else if ((type == Cell.CELL_TYPE_STRING)) {
+            return booleanValue ? 1 : 0;
+        }
+
+        if (type == Cell.CELL_TYPE_STRING) {
             String str = cell.getStringCellValue();
 
-            try {
+            if (isNumber(str)) {
                 return Double.parseDouble(str);
-            } catch (Exception ex) {
             }
-        } else if ((type == Cell.CELL_TYPE_NUMERIC)) {
-            double value = cell.getNumericCellValue();
 
-            return value;
-        } else if ((type == Cell.CELL_TYPE_BLANK)) {
+            return 0;
+        }
+
+        if (type == Cell.CELL_TYPE_NUMERIC) {
+            return cell.getNumericCellValue();
+        }
+
+        if (type == Cell.CELL_TYPE_BLANK) {
             return 0;
         }
 
@@ -298,7 +316,7 @@ public class PoiHelper {
         java.util.Date value = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        if (value_text != null && !value_text.trim().isEmpty()) {
+        if (StringUtils.isNotEmpty(value_text)) {
             try {
                 value = dateFormat.parse(value_text);
             } catch (ParseException ex) {
