@@ -228,7 +228,7 @@ public abstract class ReportView extends SimpleView {
         return new TableDataElement(resultSet.getObject(index), resultSet.getObject(index));
     }
 
-    private List<String> getIndex(ResultSet resultSet) throws SQLException {
+    protected List<String> getIndex(ResultSet resultSet) throws SQLException {
         List<String> index = new LinkedList<>();
         ResultSetMetaData metadata = resultSet.getMetaData();
 
@@ -314,7 +314,7 @@ public abstract class ReportView extends SimpleView {
         }
     }
 
-    private LinkedList<String> getColumnNames(ResultSet resultSet) throws SQLException {
+    protected LinkedList<String> getColumnNames(ResultSet resultSet) throws SQLException {
         LinkedList<String> columnNames = new LinkedList<>();
         ResultSetMetaData metadata = resultSet.getMetaData();
 
