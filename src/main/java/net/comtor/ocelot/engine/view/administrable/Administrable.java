@@ -707,6 +707,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         queryResult.setStyle("overflow: auto");
 
         AdvancedTable table = new AdvancedTable();
+        table.addClass("crud-table");
         table.addHeaders(getTableTitles());
 
         for (E entity : page.getContent()) {

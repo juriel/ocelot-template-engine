@@ -12,7 +12,6 @@ import net.comtor.ocelot.engine.view.WebView;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertDanger;
 import net.comtor.ocelot.bootstrap.components.cards.BCard;
 import net.comtor.ocelot.html.HtmlContainer;
-import net.comtor.ocelot.html.basic.HtmlBr;
 import net.comtor.ocelot.html.formatting.HtmlSmall;
 import net.comtor.ocelot.html.HtmlObject;
 import net.comtor.ocelot.html.HtmlTag;
