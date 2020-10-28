@@ -25,7 +25,7 @@ public class AjaxForm extends AbstractHtmlAdministrableFormElement {
 
     public AjaxForm addMultipart() {
         addAttribute("enctype", "multipart/form-data");;
-
+        
         return this;
     }
 
