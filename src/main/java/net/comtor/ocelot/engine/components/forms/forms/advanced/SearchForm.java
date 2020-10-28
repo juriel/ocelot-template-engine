@@ -6,7 +6,7 @@ import net.comtor.ocelot.engine.components.forms.forms.AjaxForm;
  *
  * @author Guido Cafiel
  */
-public class SearchForm extends AjaxForm{
+public class SearchForm extends AjaxForm {
 
     public SearchForm() {
         super("");

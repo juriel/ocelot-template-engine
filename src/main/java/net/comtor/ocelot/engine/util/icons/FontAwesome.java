@@ -65,6 +65,15 @@ public final class FontAwesome {
         public static final String SEARCH = PREFIX + "search";
         public static final String TRASH_ALT = PREFIX + "trash-alt";
         public static final String UPLOAD = PREFIX + "upload";
+        public static final String CHART_PIE = PREFIX + "chart-pie";
+        public static final String CHART_BAR = PREFIX + "chart-bar";
+        public static final String CHART_AREA = PREFIX + "chart-area";
+        public static final String CHART_LINE = PREFIX + "chart-line";
+        public static final String BOXES = PREFIX + "boxes";
+        public static final String BOX = PREFIX + "box";
+        public static final String INDUSTRY = PREFIX + "industry";
+        public static final String TIMES_CIRCLE = PREFIX + "times-circle";
+        public static final String TABLE = PREFIX + "table";
     }
 
     public final class Regular {
