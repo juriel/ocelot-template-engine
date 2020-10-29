@@ -8,6 +8,7 @@ import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.engine.util.icons.FontAwesome;
 import net.comtor.ocelot.html.formatting.HtmlSmall;
 import net.comtor.ocelot.html.forms.HtmlLabel;
+import net.comtor.ocelot.html.forms.inputs.HtmlInputHidden;
 import net.comtor.ocelot.html.forms.inputs.HtmlInputText;
 import net.comtor.ocelot.html.styles.HtmlDiv;
 import net.comtor.ocelot.html.styles.HtmlSpan;
@@ -18,26 +19,28 @@ import net.comtor.ocelot.html.styles.HtmlSpan;
  */
 public class FinderLauncher extends BShowField {
 
-    private String id;
+    private String nameAndId;
+    private String hiddenValue;
     private String myEndpoint;
     private BModalLauncherButton modalLauncherButton;
     private BButton clearFinderButton;
 
-    public FinderLauncher(String label, String showValue, String name, String hiddenValue, String endpoint) {
-        super(label, showValue, name, hiddenValue);
+    public FinderLauncher(String label, String showValue, String nameAndId, String hiddenValue, String endpoint) {
+        super(label, showValue, nameAndId, hiddenValue);
 
-        id = name;
-        myEndpoint = endpoint + "/" + name;
+        this.nameAndId = nameAndId;
+        this.hiddenValue = hiddenValue;
+        myEndpoint = endpoint + "/" + nameAndId;
         modalLauncherButton = getModalLauncher(myEndpoint);
-        clearFinderButton = getClearFinderButton(name);
+        clearFinderButton = getClearFinderButton(nameAndId);
 
         setStyle("height: 36px;");
 
         getInput().setClass("form-control ocelot-finder-visible");
     }
 
-    public FinderLauncher(String label, String name, String endpoint) {
-        this(label, "", name, null, endpoint);
+    public FinderLauncher(String label, String nameAndId, String endpoint) {
+        this(label, "", nameAndId, null, endpoint);
     }
 
     public FinderLauncher addParamsToEndpoint(String urlParams) {
@@ -51,6 +54,7 @@ public class FinderLauncher extends BShowField {
         // Obtengo los elementos originales del input
         HtmlLabel label = getLabelElement();
         HtmlInputText input = getInput();
+        HtmlInputHidden hidden = new HtmlInputHidden(nameAndId, hiddenValue);
         HtmlSmall help = getHelpElement();
         HtmlSmall error = getErrorElement();
 
@@ -59,20 +63,20 @@ public class FinderLauncher extends BShowField {
 
         HtmlDiv row = new HtmlDiv();
         row.addClass("row m-0");
-        row.add(input.addClass("col-9"));
+        row.add(input.addClass("col-12 col-sm-12 col-md-8 col-lg-7 col-xl-9"));
 
         HtmlSpan buttons = new HtmlSpan();
-        buttons.addClass("col-3 py-0");
+        buttons.addClass("col-12 col-sm-12 col-md-4 col-lg-5 col-xl-3 py-0");
         buttons.add(modalLauncherButton).add(clearFinderButton);
 
         row.add(buttons);
 
-        getMainContainer().add(label).add(row).add(help).add(error);
+        getMainContainer().add(label).add(row).add(hidden).add(help).add(error);
     }
 
     private BModalLauncherButton getModalLauncher(String endpoint) {
         BModalLauncherButton button = new BModalLauncherButton("ocelotModal", FontAwesome.Solid.SEARCH);
-        button.setId(id + "_modal_launcher_btn");
+        button.setId(nameAndId + "_modal_launcher_btn");
         button.addClass("btn")
                 .addClass("btn-primary")
                 .addClass("modal_launcher_btn")
@@ -86,7 +90,7 @@ public class FinderLauncher extends BShowField {
 
     private BButton getClearFinderButton(String fieldId) {
         BButton clearButton = new BButton(BButtonStyle.DANGER, "");
-        clearButton.setId(id + "_clear_finder_btn");
+        clearButton.setId(nameAndId + "_clear_finder_btn");
         clearButton.addClass("btn")
                 .addClass("btn-primary")
                 .addClass("clear_finder_btn")

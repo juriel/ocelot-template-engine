@@ -35,7 +35,7 @@ public class AppWorkMenu extends HtmlContainer implements OcelotMenu {
     @Override
     public HtmlTag getFather(MenuItem father) {
         HtmlLi liFather = new HtmlLi();
-        liFather.addClass("sidenav-item").addClass("item-father");
+        liFather.addClass("sidenav-item").addClass("parent-item");
 
         HtmlSpan spanTag = new HtmlSpan();
         spanTag.addClass("sidenav-link").addClass("sidenav-toggle");

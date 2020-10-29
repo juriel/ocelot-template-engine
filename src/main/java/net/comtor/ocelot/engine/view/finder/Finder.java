@@ -303,12 +303,12 @@ public abstract class Finder<E> {
         return this.idParent;
     }
 
-    public FinderLauncher getFinderLauncher(String label, String showValue, String name, String hiddenValue) {
-        return new FinderLauncher(label, showValue, name, hiddenValue, getFinderName());
+    public FinderLauncher getFinderLauncher(String label, String showValue, String nameAndId, String hiddenValue) {
+        return new FinderLauncher(label, showValue, nameAndId, hiddenValue, getFinderName());
     }
 
-    public FinderLauncher getFinderLauncher(String label, String name) {
-        return new FinderLauncher(label, name, getFinderName());
+    public FinderLauncher getFinderLauncher(String label, String nameAndId) {
+        return new FinderLauncher(label, nameAndId, getFinderName());
     }
 
 }
