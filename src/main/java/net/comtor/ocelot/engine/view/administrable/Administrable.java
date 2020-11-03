@@ -574,12 +574,12 @@ public abstract class Administrable<E, ID extends Serializable> {
         if (!disableBackButton()) {
             card.addToHeader(backButton);
         }
-
-        card.addToBody(new HtmlDiv(OCELOT_DEFAULT_ALERT));
-
+        
         if (getDetailSubTitle() != null) {
             card.addToBody(new HtmlSmall(getDetailSubTitle()));
         }
+        
+        card.addToBody(new HtmlDiv(OCELOT_DEFAULT_ALERT));
 
         E entity = (E) getBusinessService().getOne(id);
         card.addToBody(getDetailView(request, entity));
