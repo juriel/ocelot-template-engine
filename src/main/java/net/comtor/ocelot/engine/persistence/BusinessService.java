@@ -168,20 +168,20 @@ public abstract class BusinessService<E, ID extends Serializable> {
         LinkedHashMap<String, List<String>> errorsMap = new LinkedHashMap<>();
         Class clazz = e.getClass();
         Field[] fields = clazz.getDeclaredFields();
-        
+
         for (Field field : fields) {
             if (!field.getType().getName().equals("java.lang.String")) {
                 continue;
             }
 
             List<String> errors = new LinkedList<>();
-            
+
             Arrays.asList(field.getAnnotations()).forEach(annotation -> {
                 if (annotation instanceof javax.validation.constraints.Size) {
                     try {
                         Size sizeAnnotation = (javax.validation.constraints.Size) annotation;
                         String value = (String) clazz.getMethod("get" + StringUtils.capitalize(field.getName())).invoke(e);
-                       
+
                         if (value != null) {
                             if (value.length() < sizeAnnotation.min()) {
                                 errors.add("El campo debe contener al menos " + sizeAnnotation.min() + " caracter.");
@@ -201,7 +201,7 @@ public abstract class BusinessService<E, ID extends Serializable> {
                 errorsMap.put(field.getName(), errors);
             }
         }
-        
+
         return errorsMap;
     }
 
@@ -275,8 +275,7 @@ public abstract class BusinessService<E, ID extends Serializable> {
         return new PageImpl<>(query.getResultList(), pageable, count);
     }
 
-    protected void addQueryBody(String[] tokens, Class<E> clazz, CriteriaBuilder cb,
-            Root<E> myEntity, boolean isFinder, String search, CriteriaQuery cq, boolean isCount)
+    protected void addQueryBody(String[] tokens, Class<E> clazz, CriteriaBuilder cb, Root<E> myEntity, boolean isFinder, String search, CriteriaQuery cq, boolean isCount)
             throws SecurityException {
         List<Predicate> andPredicates = new LinkedList<>();
 
@@ -401,12 +400,13 @@ public abstract class BusinessService<E, ID extends Serializable> {
         return getDao().count();
     }
 
+    @Deprecated
     protected static boolean isEmpty(String text) {
         return (text == null || text.trim().isEmpty());
     }
 
     protected static void validateText(String text, String message) throws OcelotException {
-        if (isEmpty(text)) {
+        if (StringUtils.isEmpty(text)) {
             throw new OcelotException(message);
         }
     }
@@ -429,8 +429,7 @@ public abstract class BusinessService<E, ID extends Serializable> {
         }
     }
 
-    public void validateEntity(E entity, String messageNull, String messageEmpty)
-            throws OcelotException {
+    public void validateEntity(E entity, String messageNull, String messageEmpty) throws OcelotException {
         if (entity == null) {
             throw new OcelotException(messageNull);
         }

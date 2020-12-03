@@ -76,6 +76,7 @@ public final class FontAwesome {
         public static final String TABLE = PREFIX + "table";
         public static final String CHEVRON_UP = PREFIX + "chevron-up";
         public static final String CHEVRON_DOWN = PREFIX + "chevron-down";
+        public static final String QUESTION_CIRCLE = PREFIX + "question-circle";
     }
 
     public final class Regular {

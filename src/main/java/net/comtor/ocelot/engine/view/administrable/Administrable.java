@@ -2,7 +2,6 @@ package net.comtor.ocelot.engine.view.administrable;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -114,7 +113,7 @@ public abstract class Administrable<E, ID extends Serializable> {
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         SimpleDateFormat dateFormat = new SimpleDateFormat(getDefaultDateFormat());
         dateFormat.setLenient(true);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+        binder.registerCustomEditor(java.util.Date.class, new CustomDateEditor(dateFormat, true));
     }
 
     protected String getDefaultDateFormat() {
@@ -574,11 +573,11 @@ public abstract class Administrable<E, ID extends Serializable> {
         if (!disableBackButton()) {
             card.addToHeader(backButton);
         }
-        
+
         if (getDetailSubTitle() != null) {
             card.addToBody(new HtmlSmall(getDetailSubTitle()));
         }
-        
+
         card.addToBody(new HtmlDiv(OCELOT_DEFAULT_ALERT));
 
         E entity = (E) getBusinessService().getOne(id);

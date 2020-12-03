@@ -7,14 +7,21 @@ import net.comtor.ocelot.bootstrap.components.alerts.BAlertDanger;
 import net.comtor.ocelot.bootstrap.components.cards.BCard;
 import net.comtor.ocelot.engine.commons.MapResponse;
 import net.comtor.ocelot.engine.security.OcelotSecurityManager;
+import net.comtor.ocelot.engine.util.icons.FontAwesome;
 import static net.comtor.ocelot.engine.view.simple.SimpleView.OCELOT_DEFAULT_ALERT;
 import static net.comtor.ocelot.engine.view.simple.SimpleView.OCELOT_HIDDEN_ALERT;
 import net.comtor.ocelot.html.HtmlContainer;
+import net.comtor.ocelot.html.HtmlDoubleTag;
+import net.comtor.ocelot.html.HtmlObject;
 import net.comtor.ocelot.html.HtmlTag;
 import net.comtor.ocelot.html.IHtmlTag;
+import net.comtor.ocelot.html.basic.HtmlH2;
+import net.comtor.ocelot.html.basic.HtmlH5;
 import net.comtor.ocelot.html.formatting.HtmlSmall;
+import net.comtor.ocelot.html.links.HtmlA;
 import net.comtor.ocelot.html.programing.HtmlScript;
 import net.comtor.ocelot.html.styles.HtmlDiv;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -23,6 +30,10 @@ import net.comtor.ocelot.html.styles.HtmlDiv;
  * @version Oct 28, 2020
  */
 public abstract class ReportView2 extends ReportView {
+
+    protected String getHintText() {
+        return "";
+    }
 
     @Override
     protected List<MapResponse> getMainView(HttpServletRequest request) {
@@ -36,7 +47,7 @@ public abstract class ReportView2 extends ReportView {
         }
 
         HtmlContainer container = new HtmlContainer();
-        BCard card = new BCard(getIconClass(), getTitle());
+        BCardReport card = new BCardReport(getIconClass(), getTitle());
 
         if (getOriginController() != null) {
             card.addToHeader(getBackButton(request));
@@ -71,6 +82,12 @@ public abstract class ReportView2 extends ReportView {
 
         card.addToBody(viewContainer);
 
+        container.add(new HtmlScript(""
+                + " $(document).ready(function () {\n"
+                + "     $('[data-toggle=\"popover\"]').popover();\n"
+                + " });"
+        ));
+
         container.add(card);
 
         List<String> jsPathResources = new LinkedList<>();
@@ -94,4 +111,55 @@ public abstract class ReportView2 extends ReportView {
         return options;
     }
 
+    class BCardReport extends BCard {
+
+        public BCardReport(String icon, String title) {
+            super(icon, title);
+        }
+
+        @Override
+        protected HtmlObject getHeader(String title, List<HtmlObject> headerElements) {
+            HtmlDiv cardHeader = new HtmlDiv();
+            cardHeader.addClass("card-header").addClass("with-elements");
+
+            HtmlDoubleTag cardHeaderTitle;
+
+            if (hasSmallTitle()) {
+                cardHeaderTitle = new HtmlH5();
+            } else {
+                cardHeaderTitle = new HtmlH2();
+            }
+
+            if (getIcon() != null) {
+                cardHeaderTitle.add(getIcon());
+            }
+
+            cardHeaderTitle.addClass("card-header-title");
+            cardHeaderTitle.addEscapedText(title);
+
+            if (StringUtils.isNotEmpty(getHintText())) {
+                HtmlA hint = new HtmlA("#", "");
+                hint.addClass(FontAwesome.Solid.QUESTION_CIRCLE);
+                hint.addClass("crud-popopver-hint-icon");
+                hint.addClass("mx-2");
+                hint.addAttribute("data-toggle", "popover");
+                hint.addAttribute("title", "Acerca de este reporte");
+                hint.addAttribute("data-content", getHintText());
+                hint.addAttribute("data-placement", "right");
+                hint.addAttribute("data-trigger", "hover");
+
+                cardHeaderTitle.add(hint);
+            }
+
+            HtmlDiv cardHeaderElements = new HtmlDiv();
+            cardHeaderElements.addClass("card-header-elements").addClass("ml-auto");
+            cardHeaderElements.addAll(headerElements);
+
+            cardHeader.add(cardHeaderTitle);
+            cardHeader.add(cardHeaderElements);
+
+            return cardHeader;
+        }
+
+    }
 }
