@@ -107,7 +107,8 @@ public class PoiHelper {
     }
 
     /**
-     * Le va la madre al que use esta funcion para sacar valores de una hoja de excel en un cargue.
+     * Le va la madre al que use esta funcion para sacar valores de una hoja de
+     * excel en un cargue.
      *
      * Para eso use las otras funciones que sacan el valor correcto.
      *
@@ -149,6 +150,10 @@ public class PoiHelper {
 
     private static String getStringValueByType(Cell cell, int resultType, String defaultStringValue) {
         switch (resultType) {
+            case Cell.CELL_TYPE_STRING: {
+                return String.valueOf(cell.getStringCellValue());
+            }
+
             case Cell.CELL_TYPE_BLANK: {
                 return defaultStringValue;
             }
@@ -178,10 +183,6 @@ public class PoiHelper {
                 nf2.setGroupingUsed(false);
 
                 return nf2.format(value);
-            }
-
-            case Cell.CELL_TYPE_STRING: {
-                return String.valueOf(cell.getStringCellValue());
             }
 
             default: {
