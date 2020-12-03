@@ -12,6 +12,7 @@ import net.comtor.ocelot.html.forms.inputs.HtmlInputHidden;
 import net.comtor.ocelot.html.forms.inputs.HtmlInputText;
 import net.comtor.ocelot.html.styles.HtmlDiv;
 import net.comtor.ocelot.html.styles.HtmlSpan;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -102,4 +103,11 @@ public class FinderLauncher extends BShowField {
 
         return clearButton;
     }
+
+    @Override
+    public BShowField setValues(String showValue, String hiddenValue) {
+        this.hiddenValue = hiddenValue;
+        return super.setValues(showValue, hiddenValue);
+    }
+
 }
