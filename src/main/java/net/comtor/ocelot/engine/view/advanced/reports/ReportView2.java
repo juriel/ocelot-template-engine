@@ -34,6 +34,10 @@ public abstract class ReportView2 extends ReportView {
     protected String getHintText() {
         return "";
     }
+    
+    protected String getHintTitle(){
+        return "Acerca de este reporte";
+    }
 
     @Override
     protected List<MapResponse> getMainView(HttpServletRequest request) {
@@ -143,7 +147,7 @@ public abstract class ReportView2 extends ReportView {
                 hint.addClass("crud-popopver-hint-icon");
                 hint.addClass("mx-2");
                 hint.addAttribute("data-toggle", "popover");
-                hint.addAttribute("title", "Acerca de este reporte");
+                hint.addAttribute("title", getHintTitle());
                 hint.addAttribute("data-content", getHintText());
                 hint.addAttribute("data-placement", "right");
                 hint.addAttribute("data-trigger", "hover");
