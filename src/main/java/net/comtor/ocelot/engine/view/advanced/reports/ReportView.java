@@ -146,7 +146,7 @@ public abstract class ReportView extends SimpleView {
         preparedQuery = getPreparedQuery(request);
 
         try (ResultSet rs = getResultSetFromQuery()) {
-            if (rs.next()) {
+            if (!rs.next()) {
                 response.add(new MapResponse(OCELOT_DEFAULT_ALERT, new BAlertInfo("No se encontraron resultados para la consulta.").getHtml()));
 
                 return response;
