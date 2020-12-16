@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import net.comtor.ocelot.bootstrap.commons.BColor;
+import net.comtor.ocelot.bootstrap.components.alerts.BAlertDanger;
 import net.comtor.ocelot.bootstrap.components.alerts.BAlertInfo;
-import net.comtor.ocelot.bootstrap.components.alerts.BAlertSuccess;
 import net.comtor.ocelot.bootstrap.forms.buttons.BButtonStyle;
 import net.comtor.ocelot.bootstrap.forms.inputs.BInputText;
 import net.comtor.ocelot.engine.commons.MapResponse;
@@ -146,11 +146,18 @@ public abstract class ReportView extends SimpleView {
         preparedQuery = getPreparedQuery(request);
 
         try (ResultSet rs = getResultSetFromQuery()) {
-            response.add(new MapResponse(OCELOT_DEFAULT_ALERT, new BAlertSuccess("Se ha realizado la consulta de forma exitosa.").getHtml()));
+            if (rs.next()) {
+                response.add(new MapResponse(OCELOT_DEFAULT_ALERT, new BAlertInfo("No se encontraron resultados para la consulta.").getHtml()));
+
+                return response;
+            }
+
             response.add(new MapResponse("table_result", getResults(rs).getHtml()));
             response.add(new MapResponse("donwload_button_div", getDownloadButton(request).getHtml()));
         } catch (UnsupportedEncodingException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
+
+            response.add(new MapResponse(OCELOT_DEFAULT_ALERT, new BAlertDanger("Se presentó un error en la generación del reporte: " + ex.getMessage()).getHtml()));
         }
 
         return response;
@@ -183,12 +190,8 @@ public abstract class ReportView extends SimpleView {
     protected HtmlObject getResults(ResultSet rs) throws SQLException {
         HtmlContainer container = new HtmlContainer();
 
-        if (!rs.next()) {
-            return new BAlertInfo("No se encontraron resultados.");
-        }
-
         chart = addChart();
-        
+
         if (chart != null) {
             container.add(chart);
         }

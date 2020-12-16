@@ -31,12 +31,12 @@ import org.apache.commons.lang3.StringUtils;
  */
 public abstract class ReportView2 extends ReportView {
 
+    protected String getHintTitle() {
+        return "Acerca de este reporte";
+    }
+
     protected String getHintText() {
         return "";
-    }
-    
-    protected String getHintTitle(){
-        return "Acerca de este reporte";
     }
 
     @Override
@@ -53,6 +53,12 @@ public abstract class ReportView2 extends ReportView {
         HtmlContainer container = new HtmlContainer();
         BCardReport card = new BCardReport(getIconClass(), getTitle());
 
+        for (HtmlTag htmlTag : addToHeader()) {
+            card.addToHeader(htmlTag);
+        }
+
+        getButtons().forEach((button) -> card.addToBody(button));
+
         if (getOriginController() != null) {
             card.addToHeader(getBackButton(request));
         }
@@ -62,14 +68,6 @@ public abstract class ReportView2 extends ReportView {
             small.add(getSubTitle());
             card.addToBody(small);
         }
-
-        card.addToBody(new HtmlDiv(OCELOT_DEFAULT_ALERT));
-
-        for (HtmlTag htmlTag : addToHeader()) {
-            card.addToBody(htmlTag);
-        }
-
-        getButtons().forEach((mercuryButton) -> card.addToBody(mercuryButton));
 
         HtmlContainer viewContainer = new HtmlContainer();
 
@@ -83,6 +81,8 @@ public abstract class ReportView2 extends ReportView {
                 }
             });
         }
+
+        card.addToBody(new HtmlDiv(OCELOT_DEFAULT_ALERT));
 
         card.addToBody(viewContainer);
 
