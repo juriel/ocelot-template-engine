@@ -12,7 +12,6 @@ import net.comtor.ocelot.html.forms.inputs.HtmlInputHidden;
 import net.comtor.ocelot.html.forms.inputs.HtmlInputText;
 import net.comtor.ocelot.html.styles.HtmlDiv;
 import net.comtor.ocelot.html.styles.HtmlSpan;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -64,10 +63,10 @@ public class FinderLauncher extends BShowField {
 
         HtmlDiv row = new HtmlDiv();
         row.addClass("row m-0");
-        row.add(input.addClass("col-12 col-sm-12 col-md-8 col-lg-7 col-xl-9"));
+        row.add(input.addClass("col-9 col-sm-12 col-md-9 col-lg-9 col-xl-10"));
 
         HtmlSpan buttons = new HtmlSpan();
-        buttons.addClass("col-12 col-sm-12 col-md-4 col-lg-5 col-xl-3 py-0");
+        buttons.addClass("col-3 col-sm-12 col-md-3 col-lg-3 col-xl-2 p-0");
         buttons.add(modalLauncherButton).add(clearFinderButton);
 
         row.add(buttons);
@@ -80,6 +79,7 @@ public class FinderLauncher extends BShowField {
         button.setId(nameAndId + "_modal_launcher_btn");
         button.addClass("btn")
                 .addClass("btn-primary")
+                .addClass("finder_launcher_btn")
                 .addClass("modal_launcher_btn")
                 .addClass("ml-1 mx-0");
         button.setBColor(BColor.PRIMARY)
@@ -107,6 +107,7 @@ public class FinderLauncher extends BShowField {
     @Override
     public BShowField setValues(String showValue, String hiddenValue) {
         this.hiddenValue = hiddenValue;
+        
         return super.setValues(showValue, hiddenValue);
     }
 

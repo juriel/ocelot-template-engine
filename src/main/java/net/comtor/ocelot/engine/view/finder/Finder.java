@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import net.comtor.ocelot.bootstrap.components.alerts.BAlertInfo;
 import net.comtor.ocelot.engine.commons.MapResponse;
 import net.comtor.ocelot.engine.commons.paginators.PaginatorBar;
 import net.comtor.ocelot.engine.commons.tables.AdvancedTable;
@@ -39,6 +40,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 public abstract class Finder<E> {
 
+    private static final int FINDER_ROWS_PER_PAGE = 5;
     private static final String FINDER_FORM = "finder_form";
     private static final String FINDER_QUERY_RESULT = "finderQueryResult";
     private static final String FINDER_TABLE_RESULT = "finderTableResult";
@@ -106,15 +108,20 @@ public abstract class Finder<E> {
         return container;
     }
 
-    protected void getFilters(LinkedList<HtmlObject> filters) {
-        BInputText defaultFilter = new BInputText("Filtro", "filter", getDefaultFilterMessage());
+    protected LinkedList<HtmlObject> getFilters() {
+        LinkedList<HtmlObject> filters = new LinkedList<>();
+
+        BInputText defaultFilter = new BInputText("", "filter", getDefaultFilterMessage());
+        defaultFilter.addAttribute("placeholder", "Buscar...");
         defaultFilter.onKeyPress("return pulsar(event)");
 
         filters.add(defaultFilter);
+
+        return filters;
     }
 
     protected int getNumRowsToView() {
-        return 5;
+        return FINDER_ROWS_PER_PAGE;
     }
 
     protected Page<E> getQueryResult(Map<String, String[]> filterValues, Pageable pageable) {
@@ -136,20 +143,19 @@ public abstract class Finder<E> {
     LinkedList<String> getTableTitles() {
         LinkedList<String> titles = new LinkedList<>();
         getTableTitles(titles);
-        titles.add("Seleccionar");
 
         return titles;
     }
 
     protected void getRowOptions(LinkedList<HtmlObject> optionsList, E entity) {
         BButton button = new BButton(BButtonStyle.PRIMARY, "");
-        button.addEscapedText("Agregar");
         button.setIcon(FontAwesome.Solid.CHECK);
         button.addAttribute("title", "Seleccionar");
         String onclick = String.format("addValuesFinder('%1$s','%2$s','%3$s');", getFinderId(), getVisible(entity), getHidden(entity));
         button.onClick(onclick);
         button.addAttribute("type", "button");
         button.addAttribute("data-dismiss", "modal");
+
         optionsList.add(button);
     }
 
@@ -159,16 +165,9 @@ public abstract class Finder<E> {
 
     private HtmlContainer getTableResult(HttpServletRequest request, Page<E> page, int actualPage) {
         HtmlContainer container = new HtmlContainer();
-        container.add(new HtmlH4("Resultados"));
-
-        HtmlDiv queryResult = new HtmlDiv(FINDER_QUERY_RESULT);
-        queryResult.setStyle("overflow: auto");
 
         if (page.getContent().isEmpty()) {
             HtmlContainer divConten = new HtmlContainer();
-
-            HtmlP p = new HtmlP("No se encuentran resultados para la búsqueda");
-            divConten.add(p);
 
             if (getEntityController() != null) {
                 GetButton goToNew = new GetButton(BButtonStyle.PRIMARY, "Crear", getEntityController() + "/new");
@@ -176,34 +175,36 @@ public abstract class Finder<E> {
                 divConten.add(goToNew);
             }
 
-            BAlertWarning warning = new BAlertWarning(divConten.getHtml());
-            warning.addAttribute("finder-alert", "true");
-            container.add(warning);
-        } else {
-            AdvancedTable table = new AdvancedTable();
-            table.addHeaders(getTableTitles());
+            BAlertInfo alert = new BAlertInfo("No se encontraron resultados para la búsqueda.");
+            alert.addAttribute("finder-alert", "true");
+            container.add(alert);
 
-            for (E entity : page.getContent()) {
-                LinkedList<Object> rowData = new LinkedList<>();
-                getRow(rowData, entity);
-                LinkedList<HtmlObject> optionsList = new LinkedList<>();
-                getRowOptions(optionsList, entity);
-                table.addRowData(rowData, optionsList);
-            }
-
-            queryResult.add(table);
+            return container;
         }
+        
+        AdvancedTable table = new AdvancedTable();
+        table.addHeaders(getTableTitles());
+
+        for (E entity : page.getContent()) {
+            LinkedList<Object> rowData = new LinkedList<>();
+            getRow(rowData, entity);
+            LinkedList<HtmlObject> optionsList = new LinkedList<>();
+            getRowOptions(optionsList, entity);
+            table.addRowData(rowData, optionsList);
+        }
+
+        HtmlDiv results = new HtmlDiv(FINDER_QUERY_RESULT);
+        results.setStyle("overflow: auto");
+        results.add(table);
 
         String urlEndpoint = getFinderName() + "/search";
 
-        if (page.getTotalPages() > 0) {
-            PaginatorBar paginator = new PaginatorBar(getNumIndexOnPaginator(), FINDER_FORM, urlEndpoint, page.getTotalPages(), page.getTotalElements(),
-                    actualPage, page.getContent().size(), getNumRowsToView());
-            paginator.setUrlParams(getUrlParams(request));
-            queryResult.add(paginator);
-        }
+        PaginatorBar paginator = new PaginatorBar(getNumIndexOnPaginator(), FINDER_FORM, urlEndpoint, page.getTotalPages(), page.getTotalElements(),
+                actualPage, page.getContent().size(), getNumRowsToView());
+        paginator.setUrlParams(getUrlParams(request));
+        results.add(paginator);
 
-        container.add(queryResult);
+        container.add(results);
 
         return container;
     }
@@ -235,25 +236,24 @@ public abstract class Finder<E> {
             container.add(new HtmlP(getSubTitle()));
         }
 
-        LinkedList<HtmlObject> filters = new LinkedList<>();
-        getFilters(filters);
+        LinkedList<HtmlObject> filters = getFilters();
 
-        AjaxForm contenForm = new AjaxForm(FINDER_FORM);
-        contenForm.add(getFormParams(request));
-        contenForm.addAttribute("validate-intro", "true");
+        AjaxForm finderForm = new AjaxForm(FINDER_FORM);
+        finderForm.add(getFormParams(request));
+        finderForm.addAttribute("validate-intro", "true");
 
-        filters.stream().forEach((filter) -> {
-            contenForm.add(filter);
-        });
+        filters.stream().forEach((filter) -> finderForm.add(filter));
 
-        PostButton searchButton = new PostButton(BButtonStyle.PRIMARY, "Buscar", FINDER_FORM, getFinderName() + "/search/0" + getUrlParams(request), false);
+        PostButton searchButton = new PostButton(BButtonStyle.PRIMARY, "", FINDER_FORM, getFinderName() + "/search/0" + getUrlParams(request), false);
         searchButton.setIconClass(FontAwesome.Solid.SEARCH);
 
-        contenForm.add(searchButton);
+        finderForm.add(searchButton);
 
-        container.add(contenForm);
+        container.add(finderForm);
 
         HtmlDiv tableResult = new HtmlDiv(FINDER_TABLE_RESULT);
+        tableResult.addClass("my-4");
+
         Page<E> queryResult = getQueryResult(request);
 
         tableResult.add(getTableResult(request, queryResult, 0));

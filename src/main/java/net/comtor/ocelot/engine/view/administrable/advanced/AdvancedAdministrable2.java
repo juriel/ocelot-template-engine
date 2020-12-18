@@ -55,6 +55,10 @@ public abstract class AdvancedAdministrable2<E, ID extends Serializable> extends
         HtmlContainer container = new HtmlContainer();
         BCard card = new BCard(getIconClass(), getTitle());
 
+        for (AjaxButton ajaxButton : getButtons(request)) {
+            card.addToHeader(ajaxButton);
+        }
+
         if (getSubTitle() != null) {
             card.addToBody(new HtmlSmall(getSubTitle()));
         }
@@ -64,16 +68,9 @@ public abstract class AdvancedAdministrable2<E, ID extends Serializable> extends
         SearchForm searchForm = getFiltersForm();
         card.addToBody(searchForm);
 
-        HtmlDiv buttonsRow = new HtmlDiv("crud-action-buttons");
-        buttonsRow.addClass("m-3");
-
-        for (AjaxButton ajaxButton : getButtons(request)) {
-            buttonsRow.add(ajaxButton);
-        }
-
-        card.addToBody(buttonsRow);
-
         HtmlDiv tableResult = new HtmlDiv(OCELOT_TABLE_RESULT);
+        tableResult.addClass("my-4");
+
         Page<E> queryResult = getQueryResult();
         tableResult.add(getTableResult(request, queryResult, 0));
 

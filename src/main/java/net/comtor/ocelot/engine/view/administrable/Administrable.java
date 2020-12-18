@@ -159,6 +159,7 @@ public abstract class Administrable<E, ID extends Serializable> {
         card.addToBody(form);
 
         HtmlDiv tableResult = new HtmlDiv(OCELOT_TABLE_RESULT);
+        tableResult.addClass("my-4");
         Page<E> queryResult = getQueryResult();
         tableResult.add(getTableResult(request, queryResult, 0));
 
@@ -265,7 +266,7 @@ public abstract class Administrable<E, ID extends Serializable> {
 
     protected HtmlObject getSaveButton(String formName, String urlEndpoint) {
         PostButton saveButton = new PostButton(BButtonStyle.PRIMARY, getSaveButtonTitle(), formName, urlEndpoint, resetNewForm());
-        saveButton.setIconClass(FontAwesome.Solid.DATABASE);
+        saveButton.setIconClass(FontAwesome.Solid.SAVE);
 
         if (addToOnclickSaveButton() != null) {
             saveButton.addAttribute("onclick", saveButton.getAttribute("onclick") + addToOnclickSaveButton());
@@ -452,7 +453,7 @@ public abstract class Administrable<E, ID extends Serializable> {
 
     protected HtmlObject getEditButton(String formName, String urlEndpoint) {
         PostButton editButton = new PostButton(BButtonStyle.PRIMARY, getSaveButtonTitle(), formName, urlEndpoint, false);
-        editButton.setIconClass(FontAwesome.Solid.EDIT);
+        editButton.setIconClass(FontAwesome.Solid.SAVE);
 
         return editButton;
     }
