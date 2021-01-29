@@ -22,7 +22,6 @@ import net.comtor.ocelot.engine.util.poi.PoiHelper;
 import net.comtor.ocelot.engine.util.xlsx.XlsxUtils;
 import net.comtor.ocelot.engine.view.simple.SimpleView;
 import net.comtor.ocelot.html.HtmlContainer;
-import net.comtor.ocelot.html.basic.HtmlBr;
 import net.comtor.ocelot.html.basic.HtmlHr;
 import net.comtor.ocelot.html.basic.HtmlP;
 import net.comtor.ocelot.html.forms.HtmlLabel;
@@ -154,7 +153,7 @@ public abstract class XlsxUploadView<E> extends SimpleView {
 
     protected void getDownloadTemplate(HttpServletResponse response, HttpServletRequest request) throws IOException {
         response.setContentType(TEMPLATE_CONTENT_TYPE);
-        response.setHeader("Content-disposition", "attachment; filename=" + getTemplateFileName());
+        response.setHeader("Content-disposition", "attachment; filename=\"" + getTemplateFileName() + "\"");
 
         XSSFWorkbook workbook = getTemplateFile();
 

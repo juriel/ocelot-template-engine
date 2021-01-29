@@ -172,7 +172,7 @@ public abstract class ReportView extends SimpleView {
             String fileName = getFilename();
 
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            response.setHeader("Content-disposition", "attachment; filename=" + fileName);
+            response.setHeader("Content-disposition", "attachment; filename=\"" + fileName + "\"");
 
             XSSFWorkbook workbook = new WorkbookGenerator().generateFromResultSet(rs);
             workbook.write(response.getOutputStream());
