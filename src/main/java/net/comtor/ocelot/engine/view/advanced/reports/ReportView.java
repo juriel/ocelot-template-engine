@@ -129,9 +129,11 @@ public abstract class ReportView extends SimpleView {
         String params = "?";
 
         for (Map.Entry<String, String[]> entry : map.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue()[0];
-            params += key + "=" + value + "&";
+            for (int i = 0; i < entry.getValue().length; i++) {
+                String key = entry.getKey();
+                String value = entry.getValue()[i];
+                params += key + "=" + value + "&";
+            }
         }
 
         String urlEndpoint = getControllerName() + "/xlsx" + params;
@@ -148,6 +150,7 @@ public abstract class ReportView extends SimpleView {
         try (ResultSet rs = getResultSetFromQuery()) {
             if (!rs.next()) {
                 response.add(new MapResponse(OCELOT_DEFAULT_ALERT, new BAlertInfo("No se encontraron resultados para la consulta.").getHtml()));
+                response.add(new MapResponse("table_result", new HtmlContainer().getHtml()));
 
                 return response;
             }

@@ -849,15 +849,15 @@ public abstract class Administrable<E, ID extends Serializable> {
     }
 
     protected String getToDeletePath(E entity) {
-        return getControllerName() + "/delete/" + getId(entity) + getViewParams();
+        return getControllerName() + "/delete/" + getId(entity) + getViewParams() + "/";
     }
 
     protected String getToEditPath(E entity) {
-        return getControllerName() + "/edit/" + getId(entity) + getViewParams();
+        return getControllerName() + "/edit/" + getId(entity) + getViewParams() + "/";
     }
 
     protected String getToDetailPath(E entity) {
-        return getControllerName() + "/detail/" + getId(entity) + getViewParams();
+        return getControllerName() + "/detail/" + getId(entity) + getViewParams() + "/";
     }
 
     protected boolean editable(E entity) {
