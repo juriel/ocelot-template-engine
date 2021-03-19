@@ -23,6 +23,7 @@ import net.comtor.ocelot.html.HtmlObject;
 import net.comtor.ocelot.html.basic.HtmlP;
 import net.comtor.ocelot.html.forms.inputs.HtmlInputHidden;
 import net.comtor.ocelot.html.styles.HtmlDiv;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -149,7 +150,8 @@ public abstract class Finder<E> {
         BButton button = new BButton(BButtonStyle.PRIMARY, "");
         button.setIcon(FontAwesome.Solid.CHECK);
         button.addAttribute("title", "Seleccionar");
-        String onclick = String.format("addValuesFinder('%1$s','%2$s','%3$s');", getFinderId(), getVisible(entity), getHidden(entity));
+        String visible = StringUtils.replace(getVisible(entity), "'","\\'") ;
+        String onclick = String.format("addValuesFinder('%1$s','%2$s','%3$s');", getFinderId(), visible, getHidden(entity));
         button.onClick(onclick);
         button.addAttribute("type", "button");
         button.addAttribute("data-dismiss", "modal");
