@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.StringJoiner;
 
 /**
  *
@@ -46,7 +47,7 @@ public class OcelotPreparedQuery {
 
     public Integer[] getTypesArray() {
         Integer[] arr = new Integer[typesArray.size()];
-        
+
         return typesArray.toArray(arr);
     }
 
@@ -92,9 +93,22 @@ public class OcelotPreparedQuery {
 
     @Override
     public String toString() {
-        return "ReportJDBCPreparedQuery{" 
-                + "sql=" + sql 
-                + ", parameters=" + parameters 
+
+        StringJoiner params = new StringJoiner(",");
+        for (Object parameter : parameters) {
+            if (parameter == null) {
+                params.add("null");
+            } else if (parameter instanceof String) {
+                params.add("\"" + parameter + "\"");
+            } else {
+                params.add(parameter.toString());
+            }
+
+        }
+
+        return "ReportJDBCPreparedQuery{"
+                + "sql=" + sql
+                + ", parameters= [" + params.toString()+"]"
                 + '}';
     }
 
