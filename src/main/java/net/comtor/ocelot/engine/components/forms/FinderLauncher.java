@@ -24,6 +24,7 @@ public class FinderLauncher extends BShowField {
     private String myEndpoint;
     private BModalLauncherButton modalLauncherButton;
     private BButton clearFinderButton;
+    private String selectCallBack = "";
 
     public FinderLauncher(String label, String showValue, String nameAndId, String hiddenValue, String endpoint) {
         super(label, showValue, nameAndId, hiddenValue);
@@ -55,6 +56,7 @@ public class FinderLauncher extends BShowField {
         HtmlLabel label = getLabelElement();
         HtmlInputText input = getInput();
         HtmlInputHidden hidden = new HtmlInputHidden(nameAndId, hiddenValue);
+        hidden.addAttribute("finder_callback", selectCallBack);
         HtmlSmall help = getHelpElement();
         HtmlSmall error = getErrorElement();
 
@@ -107,8 +109,17 @@ public class FinderLauncher extends BShowField {
     @Override
     public BShowField setValues(String showValue, String hiddenValue) {
         this.hiddenValue = hiddenValue;
-        
+
         return super.setValues(showValue, hiddenValue);
     }
 
+    public String getSelectCallBack() {
+        return selectCallBack;
+    }
+
+    public void setSelectCallBack(String selectCallBack) {
+        this.selectCallBack = selectCallBack;
+    }
+
+    
 }

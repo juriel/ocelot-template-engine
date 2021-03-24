@@ -13,6 +13,17 @@
 //var sweetAlerts = document.createElement('script');
 //sweetAlerts.src = 'ocelotengine/sweet-alerts/sweetalert.min.js';
 //document.head.appendChild(sweetAlerts);
+
+function executeFunctionByName(functionName, context /*, args */) {
+    var args = Array.prototype.slice.call(arguments, 2);
+    var namespaces = functionName.split(".");
+    var func = namespaces.pop();
+    for (var i = 0; i < namespaces.length; i++) {
+        context = context[namespaces[i]];
+    }
+    return context[func].apply(context, args);
+}
+
 function preventBack() {
     window.history.forward();
 }
@@ -522,6 +533,11 @@ function pulsar(e) {
 function addValuesFinder(field, visible_value, hidden_value) {
     $("#" + field + "_visible").val(visible_value);
     $("#" + field).val(hidden_value);
+
+    var callback = $("#" + field).attr("finder_callback");
+    if (callback && callback != "") {
+        executeFunctionByName(callback, window, field, visible_value, hidden_value);
+    }
 }
 
 function clearValuesFinder(field) {

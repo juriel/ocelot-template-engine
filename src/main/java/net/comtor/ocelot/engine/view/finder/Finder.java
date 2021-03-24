@@ -48,6 +48,7 @@ public abstract class Finder<E> {
     private static final String FINDER_TITLE = "finder-title";
     private static final String FINDER_BODY = "ocelot_modal_body";
     private String defaultFinderId;
+    private String selectCallBack = "";
 
     private Object idParent;
 
@@ -152,7 +153,7 @@ public abstract class Finder<E> {
         BButton button = new BButton(BButtonStyle.PRIMARY, "");
         button.setIcon(FontAwesome.Solid.CHECK);
         button.addAttribute("title", "Seleccionar");
-        String visible = StringUtils.replace(getVisible(entity), "'","\\'") ;
+        String visible = StringUtils.replace(getVisible(entity), "'", "\\'");
         String onclick = String.format("addValuesFinder('%1$s','%2$s','%3$s');", getFinderId(), visible, getHidden(entity));
         button.onClick(onclick);
         button.addAttribute("type", "button");
@@ -183,7 +184,7 @@ public abstract class Finder<E> {
 
             return container;
         }
-        
+
         AdvancedTable table = new AdvancedTable();
         table.addHeaders(getTableTitles());
 
@@ -306,11 +307,23 @@ public abstract class Finder<E> {
     }
 
     public FinderLauncher getFinderLauncher(String label, String showValue, String nameAndId, String hiddenValue) {
-        return new FinderLauncher(label, showValue, nameAndId, hiddenValue, getFinderName());
+        FinderLauncher finderLauncher = new FinderLauncher(label, showValue, nameAndId, hiddenValue, getFinderName());
+        finderLauncher.setSelectCallBack(selectCallBack);
+        return finderLauncher;
     }
 
     public FinderLauncher getFinderLauncher(String label, String nameAndId) {
-        return new FinderLauncher(label, nameAndId, getFinderName());
+        FinderLauncher finderLauncher = new FinderLauncher(label, nameAndId, getFinderName());
+        finderLauncher.setSelectCallBack(selectCallBack);
+        return finderLauncher;
+    }
+
+    public String getSelectCallBack() {
+        return selectCallBack;
+    }
+
+    public void setSelectCallBack(String selectCallBack) {
+        this.selectCallBack = selectCallBack;
     }
 
 }
