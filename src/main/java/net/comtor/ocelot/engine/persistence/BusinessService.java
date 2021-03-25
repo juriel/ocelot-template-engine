@@ -82,7 +82,6 @@ public abstract class BusinessService<E, ID extends Serializable> {
                 }
             }
         }
-
         return null;
     }
 
@@ -137,7 +136,7 @@ public abstract class BusinessService<E, ID extends Serializable> {
      * @return
      */
     public E findOne(ID primaryKey) {
-        if (primaryKey != null && getDao().existsById(primaryKey)) {
+        if ((primaryKey != null) && getDao().existsById(primaryKey)) {
             return getOne(primaryKey);
         }
 
@@ -155,18 +154,17 @@ public abstract class BusinessService<E, ID extends Serializable> {
      * @return
      */
     public E save(E newE) throws OcelotException {
-        LinkedHashMap<String, List<String>> errors = validateEntity(newE);
+        LinkedHashMap<String, List<String>> exceptions = validateEntity(newE);
 
-        if (!errors.isEmpty()) {
-            throw new OcelotException(errors);
+        if (!exceptions.isEmpty()) {
+            throw new OcelotException(exceptions);
         }
-
         return getDao().save(newE);
     }
 
-    public LinkedHashMap<String, List<String>> validateEntity(E e) {
+    public LinkedHashMap<String, List<String>> validateEntity(E entity) {
         LinkedHashMap<String, List<String>> errorsMap = new LinkedHashMap<>();
-        Class clazz = e.getClass();
+        Class clazz = entity.getClass();
         Field[] fields = clazz.getDeclaredFields();
 
         for (Field field : fields) {
@@ -180,7 +178,8 @@ public abstract class BusinessService<E, ID extends Serializable> {
                 if (annotation instanceof javax.validation.constraints.Size) {
                     try {
                         Size sizeAnnotation = (javax.validation.constraints.Size) annotation;
-                        String value = (String) clazz.getMethod("get" + StringUtils.capitalize(field.getName())).invoke(e);
+                        String value = (String) clazz.getMethod("get"
+                                + StringUtils.capitalize(field.getName())).invoke(entity);
 
                         if (value != null) {
                             if (value.length() < sizeAnnotation.min()) {
@@ -195,13 +194,14 @@ public abstract class BusinessService<E, ID extends Serializable> {
                         LOG.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }
+
             });
 
             if (!errors.isEmpty()) {
                 errorsMap.put(field.getName(), errors);
             }
-        }
 
+        }
         return errorsMap;
     }
 
@@ -275,7 +275,8 @@ public abstract class BusinessService<E, ID extends Serializable> {
         return new PageImpl<>(query.getResultList(), pageable, count);
     }
 
-    protected void addQueryBody(String[] tokens, Class<E> clazz, CriteriaBuilder cb, Root<E> myEntity, boolean isFinder, String search, CriteriaQuery cq, boolean isCount)
+    protected void addQueryBody(String[] tokens, Class<E> clazz, CriteriaBuilder cb,
+            Root<E> myEntity, boolean isFinder, String search, CriteriaQuery cq, boolean isCount)
             throws SecurityException {
         List<Predicate> andPredicates = new LinkedList<>();
 
@@ -341,7 +342,6 @@ public abstract class BusinessService<E, ID extends Serializable> {
         } catch (NumberFormatException ex) {
             return false;
         }
-
         return true;
     }
 
@@ -429,7 +429,8 @@ public abstract class BusinessService<E, ID extends Serializable> {
         }
     }
 
-    public void validateEntity(E entity, String messageNull, String messageEmpty) throws OcelotException {
+    public void validateEntity(E entity, String messageNull, String messageEmpty)
+            throws OcelotException {
         if (entity == null) {
             throw new OcelotException(messageNull);
         }
