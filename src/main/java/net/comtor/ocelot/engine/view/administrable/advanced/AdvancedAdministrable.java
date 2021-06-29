@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 import net.comtor.ocelot.engine.commons.MapResponse;
 import net.comtor.ocelot.engine.view.administrable.Administrable;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -51,6 +53,7 @@ public abstract class AdvancedAdministrable<E, ID extends Serializable> extends 
 
     @Override
     public ID getId(E entity) {
+        entity = initializeAndUnproxy(entity);
         Class<? extends Object> clazz = entity.getClass();
         Field[] fields = clazz.getDeclaredFields();
 
@@ -68,6 +71,19 @@ public abstract class AdvancedAdministrable<E, ID extends Serializable> extends 
             }
         }
         return null;
+    }
+
+    public static <T> T initializeAndUnproxy(T entity) {
+        if (entity == null) {
+            throw new NullPointerException("Entity passed for initialization is null");
+        }
+
+        Hibernate.initialize(entity);
+        if (entity instanceof HibernateProxy) {
+            entity = (T) ((HibernateProxy) entity).getHibernateLazyInitializer()
+                    .getImplementation();
+        }
+        return entity;
     }
 
     private ID runGetter(Field field, E entity) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {

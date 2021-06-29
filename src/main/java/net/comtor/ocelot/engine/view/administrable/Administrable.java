@@ -834,7 +834,8 @@ public abstract class Administrable<E, ID extends Serializable> {
         }
 
         if (OcelotSecurityManager.isAuthorized(getActivePrivilege()) && showActiveButton && activable()) {
-            GetButton active = new GetButton(BButtonStyle.INFO, "", getControllerName() + "/active/" + getId(entity));
+            System.out.println("Entity: " + entity.hashCode());
+            GetButton active = new GetButton(BButtonStyle.INFO, "", getControllerName() + "/active/" + getId(entity) + "/");
             active.setStyle("margin-right: 5px; margin-bottom: 5px;");
             active.setIconClass(FontAwesome.Solid.CHECK_SQUARE);
             active.addAttribute("title", getActiveButtonTitle());
