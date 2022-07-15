@@ -13,6 +13,10 @@
 //var sweetAlerts = document.createElement('script');
 //sweetAlerts.src = 'ocelotengine/sweet-alerts/sweetalert.min.js';
 //document.head.appendChild(sweetAlerts);
+
+
+
+
 function executeFunctionByName(functionName, context /*, args */ ) {
     var args = Array.prototype.slice.call(arguments, 2);
     var namespaces = functionName.split(".");
@@ -213,11 +217,17 @@ function sendFormPageable(idform, url_endpoint) {
     var fields = $("#" + idform).find('input, textarea, select');
     var datastring = collectFormData(fields);
 
+    var token = $('#_csrf').attr('content');
+    var header = $('#_csrf_header').attr('content');
+    var csrf_headers  = {};
+    csrf_headers[header] = token;
+
     $.ajax({
         type: "POST",
         url: url_endpoint,
         data: datastring,
         cache: false,
+        headers: csrf_headers,
         contentType: false,
         processData: false,
         success: function(j) {
@@ -235,6 +245,14 @@ function sendFormPageable(idform, url_endpoint) {
 
 function launchGetAction(endpoint, action) {
     var showConfirm = true;
+    
+    
+    var token = $('#_csrf').attr('content');
+    var header = $('#_csrf_header').attr('content');
+    var csrf_headers  = {};
+    csrf_headers[header] = token;
+    
+    $.ajaxSetup({ headers : csrf_headers });
 
     $.getJSON(endpoint + "", function(j) {
         for (var i = 0; i < j.length; i++) {
@@ -289,12 +307,21 @@ function launchPostAction(endpoint, idform, reset, ladda) {
 
     var fields = $("#" + idform).find('input, textarea, select');
     var datastring = collectFormData(fields);
+    
+    var token = $('#_csrf').attr('content');
+    var header = $('#_csrf_header').attr('content');
+    var csrf_headers  = {};
+    csrf_headers[header] = token;
+    
+    $.ajaxSetup({ headers : csrf_headers });
+    
 
     $.ajax({
         type: "POST",
         url: endpoint,
         data: datastring,
         cache: false,
+        headers: csrf_headers ,
         contentType: false,
         processData: false,
         success: function(j) {
@@ -347,6 +374,13 @@ function launchMenuItem(endpoint) {
     //    var target = endpoint.replace("/", "-");
     //    window.history.pushState(null, "", target + ".mod");    
 
+
+    var token = $('#_csrf').attr('content');
+    var header = $('#_csrf_header').attr('content');
+    var csrf_headers  = {};
+    csrf_headers[header] = token;
+    
+    $.ajaxSetup({ headers : csrf_headers });
     $.getJSON(endpoint + "", function(j) {
         for (var i = 0; i < j.length; i++) {
             $("#" + j[i].label).css("display", "none");
@@ -518,7 +552,9 @@ function collectFormData(fields) {
             formData.append($item.attr('name'), $item.val());
         }
     }
-
+    var token = $('#_csrf').attr('content');
+    var header = $('#_csrf_header').attr('content');    
+    formData.append(header,token);
     return formData;
 }
 
