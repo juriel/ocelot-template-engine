@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.comtor.ocelot.engine.view.advanced.reports;
 
 import java.sql.ResultSet;
@@ -11,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -34,14 +30,14 @@ public class WorkbookGenerator {
         XSSFWorkbook workbook = new XSSFWorkbook();
 
         XSSFSheet sheet = workbook.createSheet();
-        LinkedList<String> index = getColumsIndex(rs);
+        LinkedHashMap<String, String> index = getColumsIndex(rs);
         addTitles(sheet, index);
         fillReportData(sheet, index, rs);
 
         return workbook;
     }
 
-    private void addTitles(XSSFSheet sheet, LinkedList<String> index) throws SQLException {
+    private void addTitles(XSSFSheet sheet, LinkedHashMap<String, String> index) throws SQLException {
 
         Font font = sheet.getWorkbook().createFont();
         font.setFontName("Arial");
@@ -55,7 +51,7 @@ public class WorkbookGenerator {
 
         XSSFRow row = sheet.createRow(0);
         int i = 0;
-        for (String string : index) {
+        for (String string : index.keySet()) {
             sheet.autoSizeColumn(i);
             XSSFCell cell = row.createCell(i++);
             cell.setCellValue(string);
@@ -64,16 +60,16 @@ public class WorkbookGenerator {
 
     }
 
-    private LinkedList<String> getColumsIndex(ResultSet rs) throws SQLException {
-        LinkedList<String> index = new LinkedList<>();
+    private LinkedHashMap<String, String> getColumsIndex(ResultSet rs) throws SQLException {
+        LinkedHashMap<String, String> index = new LinkedHashMap<>();
         ResultSetMetaData metadata = rs.getMetaData();
         for (int i = 1; i <= metadata.getColumnCount(); i++) {
-            index.add(metadata.getColumnName(i));
+            index.put(metadata.getColumnLabel(i), metadata.getColumnName(i));
         }
         return index;
     }
 
-    private void fillReportData(XSSFSheet sheet, LinkedList<String> index, ResultSet rs) throws SQLException {
+    private void fillReportData(XSSFSheet sheet, LinkedHashMap<String, String> index, ResultSet rs) throws SQLException {
         int rowIndex = 1;
 
         ResultSetMetaData metadata = rs.getMetaData();
@@ -83,7 +79,7 @@ public class WorkbookGenerator {
             XSSFRow row = sheet.createRow(rowIndex++);
 
             int i = 0;
-            for (String ind : index) {
+            for (String ind : index.keySet()) {
                 XSSFCell cell = row.createCell(i++);
                 setCellValue(i, cell, rs, ind);
                 addFormat(y, i, cell, rs, ind);

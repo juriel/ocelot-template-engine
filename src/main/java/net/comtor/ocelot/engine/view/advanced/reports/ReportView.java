@@ -12,6 +12,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -215,7 +216,7 @@ public abstract class ReportView extends SimpleView {
         while (rs.next()) {
             rowData = new LinkedList<>();
 
-            for (String index : getIndex(rs)) {
+            for (String index : getIndex(rs).values()) {
                 TableDataElement tableDataElement = getValueFromResultSet(rs, index);
                 rowData.add(tableDataElement);
             }
@@ -234,12 +235,12 @@ public abstract class ReportView extends SimpleView {
         return new TableDataElement(resultSet.getObject(index), resultSet.getObject(index));
     }
 
-    protected List<String> getIndex(ResultSet resultSet) throws SQLException {
-        List<String> index = new LinkedList<>();
+    protected LinkedHashMap<String, String> getIndex(ResultSet resultSet) throws SQLException {
+        LinkedHashMap<String, String> index = new LinkedHashMap<>();
         ResultSetMetaData metadata = resultSet.getMetaData();
 
         for (int i = 1; i <= metadata.getColumnCount(); i++) {
-            index.add(metadata.getColumnName(i));
+            index.put(metadata.getColumnLabel(i), metadata.getColumnName(i));
         }
 
         return index;
@@ -325,7 +326,7 @@ public abstract class ReportView extends SimpleView {
         ResultSetMetaData metadata = resultSet.getMetaData();
 
         for (int i = 1; i <= metadata.getColumnCount(); i++) {
-            columnNames.add(metadata.getColumnName(i));
+            columnNames.add(metadata.getColumnLabel(i));
         }
 
         return columnNames;
